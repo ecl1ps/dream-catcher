@@ -10,7 +10,14 @@ export const ControlPanel = () => {
     // Example of listening for new images from the main process
     window.api.onNewImage((image) => {
       console.log("Received new image data:", image);
-      setImages((prevImages) => [...prevImages, image]);
+      if (image) {
+        setImages((prevImages) => {
+          return prevImages.length === 0 ||
+            image.dataUrl != prevImages[prevImages.length - 1].dataUrl // printscreen triggers twice for some reason
+            ? [...prevImages, image]
+            : prevImages;
+        });
+      }
     });
   }, []);
 

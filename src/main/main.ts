@@ -56,6 +56,7 @@ const createWindows = () => {
   playerWindow.loadURL(PLAYER_WINDOW_WEBPACK_ENTRY);
 
   controlWindow.webContents.openDevTools();
+  playerWindow.webContents.openDevTools();
 
   return { controlWindow, playerWindow };
 };

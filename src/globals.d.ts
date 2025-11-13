@@ -1,6 +1,6 @@
 ﻿interface Window {
   api: {
-    setLayout: (layout: string) => void;
+    setLayout: (layout: Layout) => void;
     sendSelectedImage: (image: Image) => void;
     onNewImage: (
       callback: (image: {
@@ -8,6 +8,9 @@
         width: number;
         height: number;
       }) => void,
+    ) => void;
+    onImageConfigUpdate: (
+      callback: (config: { zoom: number; rotation: number }) => void,
     ) => void;
   };
 }

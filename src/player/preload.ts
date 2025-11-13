@@ -8,4 +8,9 @@ contextBridge.exposeInMainWorld("api", {
   onNewImage: (callback: (data: Image) => void) => {
     ipcRenderer.on("new-image", (event, data) => callback(data));
   },
+  onImageConfigUpdate: (
+    callback: (config: { zoom: number; rotation: number }) => void,
+  ) => {
+    ipcRenderer.on("update-image-config", (event, config) => callback(config));
+  },
 });

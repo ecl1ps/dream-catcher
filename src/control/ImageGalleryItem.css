@@ -3,6 +3,7 @@
   padding: 4px;
   cursor: pointer;
   max-width: 100px;
+  place-self: center;
 
   &:hover {
     border-color: gray;
