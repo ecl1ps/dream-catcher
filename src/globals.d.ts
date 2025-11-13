@@ -1,7 +1,10 @@
 ﻿interface Window {
   api: {
-    setLayout: (layout: Layout) => void;
+    sendWindowReady: () => void;
+    sendSelectedDisplay: (display: string) => void;
+    sendSelectedLayout: (layout: Layout) => void;
     sendSelectedImage: (image: Image) => void;
+    onDisplayList: (callback: (displays: string[]) => void) => void;
     onNewImage: (
       callback: (image: {
         dataUrl: string;

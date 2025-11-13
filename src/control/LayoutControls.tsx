@@ -1,6 +1,11 @@
 ﻿import { useState } from "react";
 
-export const LayoutControls = () => {
+interface LayoutControlProps {
+  displays: string[];
+}
+
+export const LayoutControls = ({ displays }: LayoutControlProps) => {
+  const [display, setDisplay] = useState(displays[0] || "");
   const [layout, setLayout] = useState("center");
   const [zoom, setZoom] = useState(100);
   const [rotation, setRotation] = useState(0);
@@ -9,11 +14,24 @@ export const LayoutControls = () => {
   const sendChange = () => {
     console.log("Sending layout change:", { layout, zoom, rotation, offset });
 
-    window.api.setLayout({ type: layout, zoom, rotation, offset });
+    window.api.sendSelectedLayout({ type: layout, zoom, rotation, offset });
   };
 
   return (
     <>
+      <select
+        value={display}
+        onChange={(e) => {
+          setDisplay(e.target.value);
+          window.api.sendSelectedDisplay(e.target.value);
+        }}
+      >
+        {displays.map((display) => (
+          <option key={display} value={display}>
+            {display}
+          </option>
+        ))}
+      </select>
       <button
         onClick={() => {
           setLayout("left-third");
@@ -62,6 +80,7 @@ export const LayoutControls = () => {
         type="range"
         min={-100}
         max={200}
+        step={10}
         value={zoom}
         onChange={(e) => {
           setZoom(Number(e.target.value));
@@ -104,6 +123,7 @@ export const LayoutControls = () => {
         type="range"
         min={0}
         max={100}
+        step={10}
         value={offset.x}
         onChange={(e) => {
           setLayout("custom");
@@ -118,6 +138,7 @@ export const LayoutControls = () => {
         type="range"
         min={0}
         max={100}
+        step={10}
         value={offset.y}
         onChange={(e) => {
           setLayout("custom");

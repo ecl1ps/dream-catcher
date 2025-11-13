@@ -17,7 +17,11 @@ if (require("electron-squirrel-startup")) {
 const getPlayerScreenPosition = (): Electron.Rectangle => {
   const allScreens = screen.getAllDisplays();
   if (allScreens.length > 1) {
-    return allScreens[1].bounds;
+    return (
+      allScreens.find(
+        (screen) => screen.bounds.x !== 0 || screen.bounds.y !== 0,
+      )?.bounds || allScreens[0].bounds
+    );
   }
   return allScreens[0].bounds;
 };
@@ -46,7 +50,6 @@ const createWindows = () => {
     autoHideMenuBar: true,
     center: true,
     darkTheme: true,
-    title: "Preview",
     //titleBarStyle: "hidden",
     webPreferences: {
       preload: PLAYER_WINDOW_PRELOAD_WEBPACK_ENTRY,

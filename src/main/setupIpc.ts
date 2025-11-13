@@ -1,4 +1,4 @@
-﻿import { clipboard, ipcMain, type BrowserWindow } from "electron";
+﻿import { clipboard, ipcMain, screen, type BrowserWindow } from "electron";
 import { updateWindowBounds } from "./updateWindowBounds";
 import ClipboardListener from "../clipboard-event/index";
 import { Image } from "../models/Image";
@@ -19,7 +19,27 @@ export function setupIpc(
   controlWindow: BrowserWindow,
   playerWindow: BrowserWindow,
 ) {
-  ipcMain.on("set-layout", (_, layout: Layout) => {
+  ipcMain.on("selected-display", (_, displayLabel: string) => {
+    const display = screen
+      .getAllDisplays()
+      .find((d) => d.label === displayLabel);
+
+    if (display) {
+      playerWindow.setBounds(display.bounds);
+
+      const newConfig = computePlayerConfig(
+        context.layout,
+        context.imageSize,
+        playerWindow,
+      );
+
+      console.log("New player config:", newConfig);
+
+      updateWindowBounds(newConfig, playerWindow);
+    }
+  });
+
+  ipcMain.on("selected-layout", (_, layout: Layout) => {
     context.layout = layout;
 
     const newConfig = computePlayerConfig(
@@ -38,7 +58,7 @@ export function setupIpc(
     });
   });
 
-  ipcMain.on("send-selected-image", (_, image: Image) => {
+  ipcMain.on("selected-image", (_, image: Image) => {
     context.imageSize = { width: image.width, height: image.height };
 
     const newConfig = computePlayerConfig(
@@ -74,5 +94,12 @@ export function setupIpc(
       };
       controlWindow.webContents.send("new-image", dto);
     }
+  });
+
+  ipcMain.on("window-ready", () => {
+    controlWindow.webContents.send(
+      "display-list",
+      screen.getAllDisplays().map((d) => d.label),
+    );
   });
 }

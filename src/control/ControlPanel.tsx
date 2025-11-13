@@ -5,6 +5,7 @@ import { LayoutControls } from "./LayoutControls";
 
 export const ControlPanel = () => {
   const [images, setImages] = useState<Image[]>([]);
+  const [displays, setDisplays] = useState<string[]>([]);
 
   useEffect(() => {
     // Example of listening for new images from the main process
@@ -19,12 +20,15 @@ export const ControlPanel = () => {
         });
       }
     });
+    window.api.onDisplayList((displays) => {
+      setDisplays(displays);
+    });
   }, []);
 
   return (
     <>
       <div>Content</div>
-      <LayoutControls />
+      <LayoutControls displays={displays} />
       <ImageGallery
         images={images}
         onImageSelect={(image) => window.api.sendSelectedImage(image)}
