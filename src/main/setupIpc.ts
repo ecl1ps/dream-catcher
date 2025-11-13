@@ -1,5 +1,7 @@
-﻿import { ipcMain, type BrowserWindow } from "electron";
+﻿import { clipboard, ipcMain, type BrowserWindow } from "electron";
 import { setLayout } from "./setLayout";
+import ClipboardListener from "../clipboard-event/index";
+import { Image } from "../models/Image";
 
 export function setupIpc(
   controlWindow: BrowserWindow,
@@ -10,5 +12,27 @@ export function setupIpc(
     // const win = BrowserWindow.fromWebContents(webContents);
     setLayout(layout, playerWindow);
   });
-  ipcMain.emit("new-image", { data: "image-data" });
+
+  ipcMain.on("send-selected-image", (event, image) => {
+    playerWindow.webContents.send("new-image", image);
+  });
+
+  console.log("Starting clipboard listener...");
+  ClipboardListener.startListening();
+
+  ClipboardListener.on("change", async () => {
+    const text = clipboard.readText();
+    const image = clipboard.readImage();
+
+    console.log("Clipboard changed:", text, image);
+
+    if (image && !image.isEmpty()) {
+      const dto: Image = {
+        dataUrl: image.toDataURL(),
+        width: image.getSize().width,
+        height: image.getSize().height,
+      };
+      controlWindow.webContents.send("new-image", dto);
+    }
+  });
 }

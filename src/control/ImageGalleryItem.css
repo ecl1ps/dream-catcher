@@ -1,0 +1,19 @@
+﻿.image-gallery-item_wrapper {
+  border: 2px solid transparent;
+  padding: 4px;
+  cursor: pointer;
+  max-width: 100px;
+
+  &:hover {
+    border-color: gray;
+  }
+
+  &.image-gallery-item_selected {
+    border: 2px solid blue;
+  }
+
+  & img {
+    width: 100%;
+    height: auto;
+  }
+}

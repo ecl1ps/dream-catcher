@@ -31,10 +31,18 @@ const config: ForgeConfig = {
         entryPoints: [
           {
             html: "./src/index.html",
-            js: "./src/renderer.ts",
-            name: "main_window",
+            js: "./src/control/renderer.ts",
+            name: "control_window",
             preload: {
-              js: "./src/preload.ts",
+              js: "./src/control/preload.ts",
+            },
+          },
+          {
+            html: "./src/index.html",
+            js: "./src/player/renderer.ts",
+            name: "player_window",
+            preload: {
+              js: "./src/player/preload.ts",
             },
           },
         ],

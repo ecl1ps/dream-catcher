@@ -1,7 +1,6 @@
-﻿export const Content = () => {
+﻿export const LayoutControls = () => {
   return (
     <>
-      <div>Content</div>
       <button
         onClick={() => {
           window.api.setLayout("fullscreen");
