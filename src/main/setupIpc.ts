@@ -4,6 +4,7 @@ import ClipboardListener from "../clipboard-event/index";
 import { Image } from "../models/Image";
 import { Layout } from "../models/Layout";
 import { computePlayerConfig } from "./computePlayerConfig";
+import { preselectDisplay } from "./preselectDisplay";
 
 type Context = {
   layout: Layout;
@@ -97,9 +98,15 @@ export function setupIpc(
   });
 
   ipcMain.on("window-ready", () => {
+    const preselectedDisplay = preselectDisplay(screen.getAllDisplays());
     controlWindow.webContents.send(
       "display-list",
-      screen.getAllDisplays().map((d) => d.label),
+      screen.getAllDisplays().map((d) => ({
+        name: d.label,
+        width: d.workAreaSize.width,
+        height: d.workAreaSize.height,
+        isPreselected: preselectedDisplay.id === d.id,
+      })),
     );
   });
 }

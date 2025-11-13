@@ -1,42 +1,50 @@
-﻿import { useState } from "react";
+﻿import { useEffect, useState } from "react";
+import { Display } from "../models/Display";
 
 interface LayoutControlProps {
-  displays: string[];
+  displays: Display[] | null;
 }
 
 export const LayoutControls = ({ displays }: LayoutControlProps) => {
-  const [display, setDisplay] = useState(displays[0] || "");
+  const [display, setDisplay] = useState({ name: "", width: 0, height: 0 });
   const [layout, setLayout] = useState("center");
   const [zoom, setZoom] = useState(100);
   const [rotation, setRotation] = useState(0);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
-  const sendChange = () => {
+  useEffect(() => {
+    if (displays) {
+      setDisplay(displays.find((d) => d.isPreselected));
+    }
+  }, [displays]);
+
+  useEffect(() => {
     console.log("Sending layout change:", { layout, zoom, rotation, offset });
 
     window.api.sendSelectedLayout({ type: layout, zoom, rotation, offset });
-  };
+  }, [layout, zoom, rotation, offset]);
 
   return (
     <>
-      <select
-        value={display}
-        onChange={(e) => {
-          setDisplay(e.target.value);
-          window.api.sendSelectedDisplay(e.target.value);
-        }}
-      >
-        {displays.map((display) => (
-          <option key={display} value={display}>
-            {display}
-          </option>
-        ))}
-      </select>
+      {displays && (
+        <select
+          value={display.name}
+          onChange={(e) => {
+            setDisplay(displays.find((d) => d.name === e.target.value));
+            window.api.sendSelectedDisplay(e.target.value);
+          }}
+        >
+          {displays.map((d) => (
+            <option key={d.name} value={d.name}>
+              {d.name} ({d.width}x{d.height})
+            </option>
+          ))}
+        </select>
+      )}
       <button
         onClick={() => {
           setLayout("left-third");
           setOffset({ x: 0, y: 0 });
-          sendChange();
         }}
       >
         Left-third
@@ -45,7 +53,6 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
         onClick={() => {
           setLayout("center");
           setOffset({ x: 0, y: 0 });
-          sendChange();
         }}
       >
         Center
@@ -54,7 +61,6 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
         onClick={() => {
           setLayout("right-third");
           setOffset({ x: 0, y: 0 });
-          sendChange();
         }}
       >
         Right-third
@@ -63,7 +69,6 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
         onClick={() => {
           setLayout("fullscreen");
           setOffset({ x: 0, y: 0 });
-          sendChange();
         }}
       >
         Fullscreen
@@ -71,7 +76,6 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
       <button
         onClick={() => {
           setLayout("custom");
-          sendChange();
         }}
       >
         Custom
@@ -84,13 +88,11 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
         value={zoom}
         onChange={(e) => {
           setZoom(Number(e.target.value));
-          sendChange();
         }}
       />
       <button
         onClick={() => {
           setRotation(0);
-          sendChange();
         }}
       >
         Down
@@ -98,7 +100,6 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
       <button
         onClick={() => {
           setRotation(90);
-          sendChange();
         }}
       >
         Left
@@ -106,7 +107,6 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
       <button
         onClick={() => {
           setRotation(180);
-          sendChange();
         }}
       >
         Up
@@ -114,7 +114,6 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
       <button
         onClick={() => {
           setRotation(270);
-          sendChange();
         }}
       >
         Right
@@ -122,7 +121,7 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
       <input
         type="range"
         min={0}
-        max={100}
+        max={display.width}
         step={10}
         value={offset.x}
         onChange={(e) => {
@@ -131,13 +130,12 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
             ...prevOffset,
             x: Number(e.target.value),
           }));
-          sendChange();
         }}
       />
       <input
         type="range"
         min={0}
-        max={100}
+        max={display.height}
         step={10}
         value={offset.y}
         onChange={(e) => {
@@ -146,7 +144,6 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
             ...prevOffset,
             y: Number(e.target.value),
           }));
-          sendChange();
         }}
       />
     </>

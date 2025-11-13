@@ -1,10 +1,14 @@
-﻿interface Window {
+﻿//import { Layout } from "./models/Layout";
+//import { Image } from "./models/Image";
+//import { Display } from "./models/Display";
+
+interface Window {
   api: {
     sendWindowReady: () => void;
     sendSelectedDisplay: (display: string) => void;
     sendSelectedLayout: (layout: Layout) => void;
     sendSelectedImage: (image: Image) => void;
-    onDisplayList: (callback: (displays: string[]) => void) => void;
+    onDisplayList: (callback: (displays: Display[]) => void) => void;
     onNewImage: (
       callback: (image: {
         dataUrl: string;

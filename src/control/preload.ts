@@ -2,6 +2,7 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
 import { contextBridge, ipcRenderer } from "electron";
+import { Display } from "../models/Display";
 import { Image } from "../models/Image";
 
 contextBridge.exposeInMainWorld("api", {
@@ -15,7 +16,7 @@ contextBridge.exposeInMainWorld("api", {
   onNewImage: (callback: (data: Image) => void) => {
     ipcRenderer.on("new-image", (event, data) => callback(data));
   },
-  onDisplayList: (callback: (displays: string[]) => void) => {
+  onDisplayList: (callback: (displays: Display[]) => void) => {
     ipcRenderer.on("display-list", (event, data) => callback(data));
   },
 });

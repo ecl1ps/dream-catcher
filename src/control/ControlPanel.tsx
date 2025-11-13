@@ -1,11 +1,12 @@
 ﻿import { useEffect, useState } from "react";
+import { Display } from "../models/Display";
 import { Image } from "../models/Image";
 import { ImageGallery } from "./ImageGallery";
 import { LayoutControls } from "./LayoutControls";
 
 export const ControlPanel = () => {
   const [images, setImages] = useState<Image[]>([]);
-  const [displays, setDisplays] = useState<string[]>([]);
+  const [displays, setDisplays] = useState<Display[]>(null);
 
   useEffect(() => {
     // Example of listening for new images from the main process
