@@ -32,6 +32,7 @@ export const PlayerPanel = () => {
         transformOrigin: "center center",
         transform: `translate(-50%, -50%) rotate(${layout.rotation}deg) scale(${layout.zoom / 100})`,
         translate,
+        transition: "transform 0.3s ease, translate 0.3s ease",
       }}
     />
   );

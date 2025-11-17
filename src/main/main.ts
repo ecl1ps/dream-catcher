@@ -56,11 +56,11 @@ const createWindows = () => {
   /*controlWindow.webContents.openDevTools({
     mode: "detach",
     title: "Control DevTools",
-  });
+  });*/
   playerWindow.webContents.openDevTools({
     mode: "detach",
     title: "Player DevTools",
-  });*/
+  });
 
   return { controlWindow, playerWindow };
 };

@@ -11,7 +11,7 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
   const [layout, setLayout] = useState("center");
   const [zoom, setZoom] = useState(100);
   const [rotation, setRotation] = useState(0);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [offset, setOffset] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
     if (displays) {
@@ -56,7 +56,6 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
           }
           onClick={() => {
             setLayout("left-third");
-            setOffset({ x: 0, y: 0 });
           }}
         >
           Left-third
@@ -69,7 +68,6 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
           }
           onClick={() => {
             setLayout("center");
-            setOffset({ x: 0, y: 0 });
           }}
         >
           Center
@@ -82,7 +80,6 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
           }
           onClick={() => {
             setLayout("right-third");
-            setOffset({ x: 0, y: 0 });
           }}
         >
           Right-third
@@ -90,7 +87,6 @@ export const LayoutControls = ({ displays }: LayoutControlProps) => {
         {/*<button
           onClick={() => {
             setLayout("fullscreen");
-            setOffset({ x: 0, y: 0 });
           }}
         >
           Fullscreen
