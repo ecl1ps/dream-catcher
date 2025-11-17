@@ -4,7 +4,6 @@
 
 interface Window {
   api: {
-    sendWindowReady: () => void;
     sendSelectedDisplay: (display: string) => void;
     sendSelectedLayout: (layout: Layout) => void;
     sendSelectedImage: (image: Image) => void;
@@ -16,8 +15,6 @@ interface Window {
         height: number;
       }) => void,
     ) => void;
-    onImageConfigUpdate: (
-      callback: (config: { zoom: number; rotation: number }) => void,
-    ) => void;
+    onLayoutUpdate: (callback: (layout: Layout) => void) => void;
   };
 }

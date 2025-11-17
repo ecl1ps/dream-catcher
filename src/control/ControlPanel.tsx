@@ -28,7 +28,6 @@ export const ControlPanel = () => {
 
   return (
     <>
-      <div>Content</div>
       <LayoutControls displays={displays} />
       <ImageGallery
         images={images}

@@ -1,7 +1,15 @@
 ﻿.image-gallery_wrapper {
+  padding: 10px;
+}
+
+.image-gallery-items_wrapper {
   display: grid;
   max-height: 80vh;
   overflow-y: auto;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 8px;
+}
+
+.image-gallery_header {
+  margin: 0;
 }

@@ -1,20 +1,13 @@
-﻿import { clipboard, ipcMain, screen, type BrowserWindow } from "electron";
-import { updateWindowBounds } from "./updateWindowBounds";
+﻿import {
+  clipboard,
+  ipcMain,
+  MessageChannelMain,
+  screen,
+  type BrowserWindow,
+} from "electron";
 import ClipboardListener from "../clipboard-event/index";
 import { Image } from "../models/Image";
-import { Layout } from "../models/Layout";
-import { computePlayerConfig } from "./computePlayerConfig";
 import { preselectDisplay } from "./preselectDisplay";
-
-type Context = {
-  layout: Layout;
-  imageSize: { width: number; height: number };
-};
-
-const context: Context = {
-  layout: { type: "center", zoom: 100, rotation: 0 },
-  imageSize: { width: 800, height: 600 },
-};
 
 export function setupIpc(
   controlWindow: BrowserWindow,
@@ -27,63 +20,14 @@ export function setupIpc(
 
     if (display) {
       playerWindow.setBounds(display.bounds);
-
-      const newConfig = computePlayerConfig(
-        context.layout,
-        context.imageSize,
-        playerWindow,
-      );
-
-      console.log("New player config:", newConfig);
-
-      updateWindowBounds(newConfig, playerWindow);
     }
-  });
-
-  ipcMain.on("selected-layout", (_, layout: Layout) => {
-    context.layout = layout;
-
-    const newConfig = computePlayerConfig(
-      context.layout,
-      context.imageSize,
-      playerWindow,
-    );
-
-    console.log("New player config:", newConfig);
-
-    updateWindowBounds(newConfig, playerWindow);
-
-    playerWindow.webContents.send("update-image-config", {
-      zoom: newConfig.zoom,
-      rotation: newConfig.rotation,
-    });
-  });
-
-  ipcMain.on("selected-image", (_, image: Image) => {
-    context.imageSize = { width: image.width, height: image.height };
-
-    const newConfig = computePlayerConfig(
-      context.layout,
-      context.imageSize,
-      playerWindow,
-    );
-
-    console.log("New player config on image select:", newConfig);
-
-    updateWindowBounds(newConfig, playerWindow);
-
-    playerWindow.webContents.send("update-image-config", {
-      zoom: newConfig.zoom,
-      rotation: newConfig.rotation,
-    });
-
-    playerWindow.webContents.send("new-image", image);
   });
 
   ClipboardListener.startListening();
 
   ClipboardListener.on("change", async () => {
     const image = clipboard.readImage();
+    const html = clipboard.readHTML(); // e.g '<img src="https://css-tricks.com/wp-content/uploads/2018/11/align-self-end.svg" alt="Example of align-self set to end"/>'
 
     console.log("Clipboard changed");
 
@@ -93,11 +37,32 @@ export function setupIpc(
         width: image.getSize().width,
         height: image.getSize().height,
       };
+
       controlWindow.webContents.send("new-image", dto);
+
+      if (!controlWindow.isFocused() && !controlWindow.isMinimized()) {
+        controlWindow.minimize();
+      }
+
+      controlWindow.show();
+
+      controlWindow.setAlwaysOnTop(true);
+      controlWindow.focus();
+      controlWindow.setAlwaysOnTop(false);
     }
   });
 
-  ipcMain.on("window-ready", () => {
+  const { port1, port2 } = new MessageChannelMain();
+
+  controlWindow.once("ready-to-show", () => {
+    controlWindow.webContents.postMessage("port", null, [port1]);
+  });
+
+  playerWindow.once("ready-to-show", () => {
+    playerWindow.webContents.postMessage("port", null, [port2]);
+  });
+
+  controlWindow.once("ready-to-show", () => {
     const preselectedDisplay = preselectDisplay(screen.getAllDisplays());
     controlWindow.webContents.send(
       "display-list",

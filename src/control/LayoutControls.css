@@ -1,0 +1,35 @@
+﻿.layout-controls_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.layout-controls_display-select {
+  margin-left: 10px;
+  padding: 5px;
+  background-color: #333;
+  color: white;
+  border: 2px solid #333;
+  border-radius: 3px;
+}
+
+.layout-controls_layout-button {
+  border-radius: 3px;
+  border: 3px solid #007bff;
+  margin: 2px;
+  padding: 5px 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.layout-controls_layout-button--is-selected {
+  background-color: #007bff;
+}
+
+.layout-controls_range-input {
+  display: inline-flex;
+  width: 190px;
+}

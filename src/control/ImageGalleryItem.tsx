@@ -17,9 +17,10 @@ export const ImageGalleryItem = ({
       onClick={onClick}
       className={`image-gallery-item_wrapper ${isSelected ? "image-gallery-item_selected" : ""}`}
     >
-      <img src={image.dataUrl} />
-      <p>Width: {image.width}px</p>
-      <p>Height: {image.height}px</p>
+      <img
+        src={image.dataUrl}
+        alt={`Image Width: ${image.width}px Height: ${image.height}px`}
+      />
     </div>
   );
 };

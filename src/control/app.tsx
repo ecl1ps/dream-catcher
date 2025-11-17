@@ -4,5 +4,3 @@ import { ControlPanel } from "./ControlPanel";
 
 const root = createRoot(document.body);
 root.render(<ControlPanel />);
-
-window.api.sendWindowReady();

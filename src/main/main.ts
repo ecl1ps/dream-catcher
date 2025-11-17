@@ -15,15 +15,17 @@ if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
-const getPlayerScreenPosition = (): Electron.Rectangle => {
+const getPlayerScreenBounds = (): Electron.Rectangle => {
   return preselectDisplay(screen.getAllDisplays()).bounds;
 };
 
 const createWindows = () => {
   const controlWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
+    height: 650,
+    width: 480,
     darkTheme: true,
+    backgroundColor: "#222222",
+    autoHideMenuBar: true,
     webPreferences: {
       preload: CONTROL_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
@@ -33,17 +35,17 @@ const createWindows = () => {
 
   controlWindow.loadURL(CONTROL_WINDOW_WEBPACK_ENTRY);
 
-  const { x, y } = getPlayerScreenPosition();
+  const dimensions = getPlayerScreenBounds();
 
   const playerWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
-    x,
-    y,
-    autoHideMenuBar: true,
-    center: true,
-    darkTheme: true,
-    //titleBarStyle: "hidden",
+    ...dimensions,
+    transparent: true,
+    frame: false,
+    fullscreen: true,
+    alwaysOnTop: true,
+    hasShadow: true,
+    parent: controlWindow,
+    title: "Dreamcatcher Player",
     webPreferences: {
       preload: PLAYER_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
@@ -51,8 +53,14 @@ const createWindows = () => {
 
   playerWindow.loadURL(PLAYER_WINDOW_WEBPACK_ENTRY);
 
-  controlWindow.webContents.openDevTools();
-  playerWindow.webContents.openDevTools();
+  /*controlWindow.webContents.openDevTools({
+    mode: "detach",
+    title: "Control DevTools",
+  });
+  playerWindow.webContents.openDevTools({
+    mode: "detach",
+    title: "Player DevTools",
+  });*/
 
   return { controlWindow, playerWindow };
 };

@@ -8,5 +8,5 @@
       type: "custom";
       zoom: number;
       rotation: number;
-      offset: { x: number; y: number };
+      offset: { x: number | string; y: number | string };
     };

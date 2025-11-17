@@ -20,11 +20,11 @@ export const ImageGallery = ({ images, onImageSelect }: ImageGalleryProps) => {
   };
 
   return (
-    <div>
-      <h2>Images Component</h2>
+    <div className="image-gallery_wrapper">
+      <h2 className="image-gallery_header">Images</h2>
       {images.length === 0 && <p>No images available</p>}
       {images.length > 0 && (
-        <div className="image-gallery_wrapper">
+        <div className="image-gallery-items_wrapper">
           {images.map((image, index) => (
             <ImageGalleryItem
               key={index}
