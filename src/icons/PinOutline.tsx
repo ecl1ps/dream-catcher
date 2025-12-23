@@ -1,8 +1,10 @@
-﻿type PinProps = {
-  size: string;
+﻿// https://iconbuddy.com/
+
+type PinProps = {
+  size?: string;
 };
 
-export const PinOutline = ({ size }: PinProps) => (
+export const PinOutline = ({ size = "1em" }: PinProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -11,7 +13,7 @@ export const PinOutline = ({ size }: PinProps) => (
   >
     <path
       fill="none"
-      stroke="#007bff"
+      stroke="currentColor"
       stroke-linecap="round"
       stroke-linejoin="round"
       stroke-width="1.5"

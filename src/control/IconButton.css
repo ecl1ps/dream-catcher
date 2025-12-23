@@ -1,0 +1,22 @@
+﻿.icon-button {
+  border: none;
+  cursor: pointer;
+  color: #007bff;
+  padding: 2px;
+  font-size: 18px;
+  width: 25px;
+  height: 25px;
+  border-radius: 3px;
+  margin: 2px;
+  background-color: #333;
+
+  &:hover {
+    background-color: #007bff;
+    color: white;
+  }
+}
+
+.icon-button--is-active {
+  background-color: #007bff;
+  color: white;
+}

@@ -1,18 +1,20 @@
-﻿type EyeOffProps = {
-  size: string;
+﻿// https://iconbuddy.com/
+
+type EyeOffProps = {
+  size?: string;
 };
 
-export const EyeOff = ({ size }: EyeOffProps) => (
+export const EyeOff = ({ size = "1em" }: EyeOffProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
     height={size}
     viewBox="0 0 24 24"
-    fill="#007bff"
+    fill="currentColor"
   >
     <g
       fill="none"
-      stroke="#007bff"
+      stroke="currentColor"
       stroke-linecap="round"
       stroke-linejoin="round"
       stroke-width="1.5"

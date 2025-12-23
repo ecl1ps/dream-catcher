@@ -4,6 +4,7 @@ import { EyeOff } from "../icons/EyeOff";
 import { PinFill } from "../icons/PinFill";
 import { PinOutline } from "../icons/PinOutline";
 import { Display } from "../models/Display";
+import { IconButton } from "./IconButton";
 import "./LayoutControls.css";
 
 interface LayoutControlProps {
@@ -58,25 +59,25 @@ export const LayoutControls = ({
             </select>
           </>
         )}
-        <button
-          className="layout-controls_icon-button"
+        <IconButton
           title={isPinned ? "Unpin window" : "Pin window"}
+          isActive={isPinned}
           onClick={() => {
             window.api.sendPinnedWindow(!isPinned);
             setIsPinned(!isPinned);
           }}
         >
-          {isPinned ? <PinFill size="1em" /> : <PinOutline size="1em" />}
-        </button>
-        <button
-          className="layout-controls_icon-button"
+          {isPinned ? <PinFill /> : <PinOutline />}
+        </IconButton>
+        <IconButton
           title={isPlayerShown ? "Hide player" : "Show player"}
+          isActive={isPlayerShown}
           onClick={() => {
             onPlayerVisibilityChange(!isPlayerShown);
           }}
         >
-          {isPlayerShown ? <EyeFill size="1em" /> : <EyeOff size="1em" />}
-        </button>
+          {isPlayerShown ? <EyeFill /> : <EyeOff />}
+        </IconButton>
       </div>
       <div>
         Layout
@@ -201,7 +202,47 @@ export const LayoutControls = ({
           Right
         </button>
       </div>
-      {}
+      {layout === "custom" ? (
+        <div>
+          Pos.{" "}
+          <span className="layout-controls_range-input">
+            X:{" "}
+            <input
+              type="range"
+              min={0}
+              max={100}
+              step={10}
+              value={offset.x}
+              onChange={(e) => {
+                setLayout("custom");
+                setOffset((prevOffset) => ({
+                  ...prevOffset,
+                  x: Number(e.target.value),
+                }));
+              }}
+            />
+            {offset.x}%
+          </span>
+          <span className="layout-controls_range-input">
+            Y:{" "}
+            <input
+              type="range"
+              min={0}
+              max={100}
+              step={10}
+              value={offset.y}
+              onChange={(e) => {
+                setLayout("custom");
+                setOffset((prevOffset) => ({
+                  ...prevOffset,
+                  y: Number(e.target.value),
+                }));
+              }}
+            />
+            {offset.y}%
+          </span>
+        </div>
+      ) : null}
     </div>
   );
 };
