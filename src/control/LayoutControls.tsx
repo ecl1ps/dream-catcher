@@ -39,25 +39,23 @@ export const LayoutControls = ({
 
   return (
     <div className="layout-controls_wrapper">
-      <div>
+      <span className="layout-controls_title">Display</span>
+      <div className="layout-controls_controls">
         {displays && (
-          <>
-            Display
-            <select
-              className="layout-controls_display-select"
-              value={display.name}
-              onChange={(e) => {
-                setDisplay(displays.find((d) => d.name === e.target.value));
-                window.api.sendSelectedDisplay(e.target.value);
-              }}
-            >
-              {displays.map((d) => (
-                <option key={d.name} value={d.name}>
-                  {d.name} ({d.width}x{d.height})
-                </option>
-              ))}
-            </select>
-          </>
+          <select
+            className="layout-controls_display-select"
+            value={display.name}
+            onChange={(e) => {
+              setDisplay(displays.find((d) => d.name === e.target.value));
+              window.api.sendSelectedDisplay(e.target.value);
+            }}
+          >
+            {displays.map((d) => (
+              <option key={d.name} value={d.name}>
+                {d.name} ({d.width}x{d.height})
+              </option>
+            ))}
+          </select>
         )}
         <IconButton
           title={isPinned ? "Unpin window" : "Pin window"}
@@ -79,8 +77,8 @@ export const LayoutControls = ({
           {isPlayerShown ? <EyeFill /> : <EyeOff />}
         </IconButton>
       </div>
-      <div>
-        Layout
+      <span className="layout-controls_title">Layout</span>
+      <div className="layout-controls_controls">
         <button
           className={
             layout == "left-third"
@@ -137,8 +135,8 @@ export const LayoutControls = ({
           Custom
         </button>
       </div>
-      <div>
-        Zoom
+      <span className="layout-controls_title">Zoom</span>
+      <div className="layout-controls_controls">
         <input
           type="range"
           min={10}
@@ -151,8 +149,8 @@ export const LayoutControls = ({
         />{" "}
         {zoom}%
       </div>
-      <div>
-        Rotation
+      <span className="layout-controls_title">Rotation</span>
+      <div className="layout-controls_controls">
         <button
           className={
             rotation == 0
@@ -203,45 +201,47 @@ export const LayoutControls = ({
         </button>
       </div>
       {layout === "custom" ? (
-        <div>
-          Pos.{" "}
-          <span className="layout-controls_range-input">
-            X:{" "}
-            <input
-              type="range"
-              min={0}
-              max={100}
-              step={10}
-              value={offset.x}
-              onChange={(e) => {
-                setLayout("custom");
-                setOffset((prevOffset) => ({
-                  ...prevOffset,
-                  x: Number(e.target.value),
-                }));
-              }}
-            />
-            {offset.x}%
-          </span>
-          <span className="layout-controls_range-input">
-            Y:{" "}
-            <input
-              type="range"
-              min={0}
-              max={100}
-              step={10}
-              value={offset.y}
-              onChange={(e) => {
-                setLayout("custom");
-                setOffset((prevOffset) => ({
-                  ...prevOffset,
-                  y: Number(e.target.value),
-                }));
-              }}
-            />
-            {offset.y}%
-          </span>
-        </div>
+        <>
+          <span className="layout-controls_title">Position </span>
+          <div className="layout-controls_controls">
+            <span className="layout-controls_range-input">
+              X:{" "}
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={10}
+                value={offset.x}
+                onChange={(e) => {
+                  setLayout("custom");
+                  setOffset((prevOffset) => ({
+                    ...prevOffset,
+                    x: Number(e.target.value),
+                  }));
+                }}
+              />
+              {offset.x}%
+            </span>
+            <span className="layout-controls_range-input">
+              Y:{" "}
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={10}
+                value={offset.y}
+                onChange={(e) => {
+                  setLayout("custom");
+                  setOffset((prevOffset) => ({
+                    ...prevOffset,
+                    y: Number(e.target.value),
+                  }));
+                }}
+              />
+              {offset.y}%
+            </span>
+          </div>
+        </>
       ) : null}
     </div>
   );

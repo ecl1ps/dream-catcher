@@ -1,12 +1,17 @@
 ﻿.layout-controls_wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 3px;
   padding: 10px;
 }
 
+.layout-controls_title {
+  align-self: center;
+}
+.layout-controls_controls {
+}
+
 .layout-controls_display-select {
-  margin-left: 10px;
   padding: 4px 1px 0px 1px;
   background-color: #333;
   color: white;
