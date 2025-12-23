@@ -7,6 +7,7 @@ import { LayoutControls } from "./LayoutControls";
 export const ControlPanel = () => {
   const [images, setImages] = useState<Image[]>([]);
   const [displays, setDisplays] = useState<Display[]>(null);
+  const [isPlayerShown, setIsPlayerShown] = useState(false);
 
   useEffect(() => {
     // Example of listening for new images from the main process
@@ -28,10 +29,23 @@ export const ControlPanel = () => {
 
   return (
     <>
-      <LayoutControls displays={displays} />
+      <LayoutControls
+        displays={displays}
+        isPlayerShown={isPlayerShown}
+        onPlayerVisibilityChange={() => {
+          setIsPlayerShown(!isPlayerShown);
+          window.api.sendShowPlayer(!isPlayerShown);
+        }}
+      />
       <ImageGallery
         images={images}
-        onImageSelect={(image) => window.api.sendSelectedImage(image)}
+        onImageSelect={(image) => {
+          window.api.sendSelectedImage(image);
+          if (!isPlayerShown) {
+            setIsPlayerShown(true);
+            window.api.sendShowPlayer(true);
+          }
+        }}
       />
     </>
   );

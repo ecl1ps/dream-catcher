@@ -33,3 +33,12 @@
   display: inline-flex;
   width: 190px;
 }
+
+.layout-controls_icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  padding: 5px;
+  font-size: 18px;
+}

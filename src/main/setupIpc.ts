@@ -20,6 +20,18 @@ export function setupIpc(
 
     if (display) {
       playerWindow.setBounds(display.bounds);
+      playerWindow.setAlwaysOnTop(true);
+    }
+  });
+
+  ipcMain.on("pinned-window", (_, isPinned: boolean) => {
+    controlWindow.setAlwaysOnTop(isPinned);
+  });
+  ipcMain.on("show-player", (_, isShown: boolean) => {
+    if (isShown) {
+      playerWindow.show();
+    } else {
+      playerWindow.hide();
     }
   });
 
