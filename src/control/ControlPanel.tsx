@@ -8,6 +8,7 @@ export const ControlPanel = () => {
   const [images, setImages] = useState<Image[]>([]);
   const [displays, setDisplays] = useState<Display[]>(null);
   const [isPlayerShown, setIsPlayerShown] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
   useEffect(() => {
     // Example of listening for new images from the main process
@@ -41,9 +42,19 @@ export const ControlPanel = () => {
         images={images}
         onImageSelect={(image) => {
           window.api.sendSelectedImage(image);
+          setSelectedImage(image);
           if (!isPlayerShown) {
             setIsPlayerShown(true);
             window.api.sendShowPlayer(true);
+          }
+        }}
+        onImageRemove={(image) => {
+          setImages((prevImages) =>
+            prevImages.filter((img) => img.dataUrl !== image.dataUrl),
+          );
+          if (selectedImage?.dataUrl === image.dataUrl) {
+            setSelectedImage(null);
+            window.api.sendSelectedImage(null);
           }
         }}
       />

@@ -3,6 +3,7 @@
   padding: 4px;
   cursor: pointer;
   place-self: center;
+  position: relative;
 
   &:hover {
     border-color: gray;
@@ -12,8 +13,14 @@
     border: 2px solid #007bff;
   }
 
-  & img {
+  img {
     width: 100%;
     height: auto;
+  }
+
+  .image-gallery-item_controls {
+    position: absolute;
+    top: 5px;
+    right: 5px;
   }
 }

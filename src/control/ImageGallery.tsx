@@ -7,9 +7,14 @@ import "./ImageGallery.css";
 type ImageGalleryProps = {
   images: Image[];
   onImageSelect: (image: Image) => void;
+  onImageRemove: (image: Image) => void;
 };
 
-export const ImageGallery = ({ images, onImageSelect }: ImageGalleryProps) => {
+export const ImageGallery = ({
+  images,
+  onImageSelect,
+  onImageRemove,
+}: ImageGalleryProps) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
@@ -31,6 +36,7 @@ export const ImageGallery = ({ images, onImageSelect }: ImageGalleryProps) => {
               image={image}
               isSelected={index === selectedImageIndex}
               onClick={() => handleImageClick(index)}
+              onRemove={() => onImageRemove(image)}
             />
           ))}
         </div>
