@@ -20,31 +20,17 @@ const getPlayerScreenBounds = (): Electron.Rectangle => {
 };
 
 const createWindows = () => {
-  const controlWindow = new BrowserWindow({
-    height: 650,
-    width: 480,
-    darkTheme: true,
-    backgroundColor: "#222222",
-    autoHideMenuBar: true,
-    webPreferences: {
-      preload: CONTROL_WINDOW_PRELOAD_WEBPACK_ENTRY,
-    },
-  });
-
-  //controlWindow.setAlwaysOnTop(true);
-
-  controlWindow.loadURL(CONTROL_WINDOW_WEBPACK_ENTRY);
-
   const dimensions = getPlayerScreenBounds();
+  const isMultiDisplay = screen.getAllDisplays().length > 1;
 
   const playerWindow = new BrowserWindow({
     ...dimensions,
     transparent: true,
     frame: false,
     fullscreen: true,
-    alwaysOnTop: true,
+    alwaysOnTop: isMultiDisplay, // pin to top only on a different screen
+    skipTaskbar: isMultiDisplay,
     hasShadow: true,
-    parent: controlWindow,
     title: "Dreamcatcher Player",
     webPreferences: {
       preload: PLAYER_WINDOW_PRELOAD_WEBPACK_ENTRY,
@@ -55,14 +41,35 @@ const createWindows = () => {
 
   playerWindow.loadURL(PLAYER_WINDOW_WEBPACK_ENTRY);
 
+  const primaryDisplay = screen.getPrimaryDisplay();
+
+  const controlWindow = new BrowserWindow({
+    height: 650,
+    width: 480,
+    x: primaryDisplay.bounds.x + primaryDisplay.workAreaSize.width - 480 - 20,
+    y: primaryDisplay.bounds.y + primaryDisplay.workAreaSize.height - 650 - 20,
+    darkTheme: true,
+    backgroundColor: "#222222",
+    autoHideMenuBar: true,
+    webPreferences: {
+      preload: CONTROL_WINDOW_PRELOAD_WEBPACK_ENTRY,
+    },
+  });
+
+  controlWindow.loadURL(CONTROL_WINDOW_WEBPACK_ENTRY);
+
+  controlWindow.on("closed", () => {
+    app.quit();
+  });
+
   /*controlWindow.webContents.openDevTools({
     mode: "detach",
     title: "Control DevTools",
-  });*/
+  });
   playerWindow.webContents.openDevTools({
     mode: "detach",
     title: "Player DevTools",
-  });
+  });*/
 
   return { controlWindow, playerWindow };
 };
