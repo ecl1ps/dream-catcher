@@ -50,10 +50,18 @@ const createWindows = () => {
   const primaryDisplay = screen.getPrimaryDisplay();
 
   const controlWindow = new BrowserWindow({
-    height: 650,
-    width: 480,
-    x: primaryDisplay.bounds.x + primaryDisplay.workAreaSize.width - 480 - 20,
-    y: primaryDisplay.bounds.y + primaryDisplay.workAreaSize.height - 650 - 20,
+    height: CONTROL_WINDOW_HEIGHT,
+    width: CONTROL_WINDOW_WIDTH,
+    x:
+      primaryDisplay.bounds.x +
+      primaryDisplay.workAreaSize.width -
+      CONTROL_WINDOW_WIDTH -
+      20,
+    y:
+      primaryDisplay.bounds.y +
+      primaryDisplay.workAreaSize.height -
+      CONTROL_WINDOW_HEIGHT -
+      20,
     darkTheme: true,
     backgroundColor: "#222222",
     autoHideMenuBar: true,
