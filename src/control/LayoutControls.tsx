@@ -87,6 +87,7 @@ export const LayoutControls = ({
           }
           onClick={() => {
             setLayout("left-third");
+            setOffset({ x: 33, y: 50 });
           }}
         >
           Left-third
@@ -99,6 +100,7 @@ export const LayoutControls = ({
           }
           onClick={() => {
             setLayout("center");
+            setOffset({ x: 50, y: 50 });
           }}
         >
           Center
@@ -111,6 +113,7 @@ export const LayoutControls = ({
           }
           onClick={() => {
             setLayout("right-third");
+            setOffset({ x: 67, y: 50 });
           }}
         >
           Right-third
@@ -141,7 +144,7 @@ export const LayoutControls = ({
           type="range"
           min={10}
           max={300}
-          step={10}
+          step={5}
           value={zoom}
           onChange={(e) => {
             setZoom(Number(e.target.value));
@@ -210,7 +213,7 @@ export const LayoutControls = ({
                 type="range"
                 min={0}
                 max={100}
-                step={10}
+                step={5}
                 value={offset.x}
                 onChange={(e) => {
                   setLayout("custom");
@@ -228,7 +231,7 @@ export const LayoutControls = ({
                 type="range"
                 min={0}
                 max={100}
-                step={10}
+                step={5}
                 value={offset.y}
                 onChange={(e) => {
                   setLayout("custom");

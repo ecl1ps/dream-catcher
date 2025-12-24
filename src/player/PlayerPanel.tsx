@@ -45,7 +45,7 @@ function computeTranslation(layout: Layout) {
     case "right-third":
       return `67vw 50vh`;
     case "custom":
-      return `min(max(${layout.offset.x}vw, 50%), calc(${layout.offset.x}vw - 50%)) min(max(${layout.offset.y}vh, 50%), calc(${layout.offset.y}vh - 50%))`;
+      return `${layout.offset.x}vw ${layout.offset.y}vh`;
     case "center":
     case "fullscreen":
     default:
