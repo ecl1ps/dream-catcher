@@ -10,6 +10,12 @@ declare const CONTROL_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 declare const PLAYER_WINDOW_WEBPACK_ENTRY: string;
 declare const PLAYER_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
+const CONTROL_WINDOW_WIDTH = 380;
+const CONTROL_WINDOW_HEIGHT = 650;
+
+const debugControl = process.argv.includes("--debug-control");
+const debugPlayer = process.argv.includes("--debug-player");
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
   app.quit();
@@ -62,14 +68,18 @@ const createWindows = () => {
     app.quit();
   });
 
-  /*controlWindow.webContents.openDevTools({
-    mode: "detach",
-    title: "Control DevTools",
-  });
-  playerWindow.webContents.openDevTools({
-    mode: "detach",
-    title: "Player DevTools",
-  });*/
+  if (debugControl) {
+    controlWindow.webContents.openDevTools({
+      mode: "detach",
+      title: "Control DevTools",
+    });
+  }
+  if (debugPlayer) {
+    playerWindow.webContents.openDevTools({
+      mode: "detach",
+      title: "Player DevTools",
+    });
+  }
 
   return { controlWindow, playerWindow };
 };
