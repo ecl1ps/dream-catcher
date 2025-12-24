@@ -7,6 +7,7 @@
 } from "react";
 import { Display } from "../models/Display";
 import { Image } from "../models/Image";
+import { calculateMaxZoom } from "./calculateMaxZoom";
 
 interface AppState {
   images: Image[];
@@ -57,6 +58,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [offset, setOffset] = useState({ x: 50, y: 50 });
   const [isPinned, setIsPinned] = useState(false);
 
+  const isImageSideways = rotation % 180 !== 0;
+
   useEffect(() => {
     // Example of listening for new images from the main process
     window.api.onNewImage((image) => {
@@ -82,6 +85,23 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   }, [displays]);
 
   useEffect(() => {
+    if (!selectedImage) {
+      return;
+    }
+
+    if (
+      (isImageSideways ? selectedImage.height : selectedImage.width) >
+        display.width ||
+      (isImageSideways ? selectedImage.width : selectedImage.height) >
+        display.height
+    ) {
+      setZoom(calculateMaxZoom(selectedImage, display, isImageSideways));
+    } else {
+      setZoom(100);
+    }
+  }, [display, isImageSideways, selectedImage]);
+
+  useEffect(() => {
     console.log("Sending layout change:", { layout, zoom, rotation, offset });
     window.api.sendSelectedLayout({ type: layout, zoom, rotation, offset });
   }, [layout, zoom, rotation, offset]);
@@ -104,6 +124,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const onImageSelect = (image: Image) => {
     window.api.sendSelectedImage(image);
     setSelectedImage(image);
+
+    if (!image) {
+      return;
+    }
+
     if (!isPlayerShown) {
       setIsPlayerShown(true);
       window.api.sendShowPlayer(true);
