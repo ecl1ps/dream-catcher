@@ -10,7 +10,7 @@ declare const CONTROL_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 declare const PLAYER_WINDOW_WEBPACK_ENTRY: string;
 declare const PLAYER_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
-const CONTROL_WINDOW_WIDTH = 380;
+const CONTROL_WINDOW_WIDTH = 385;
 const CONTROL_WINDOW_HEIGHT = 650;
 
 const debugControl = process.argv.includes("--debug-control");

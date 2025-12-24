@@ -1,41 +1,30 @@
-﻿import { useEffect, useState } from "react";
-import { EyeFill } from "../icons/EyeFill";
+﻿import { EyeFill } from "../icons/EyeFill";
 import { EyeOff } from "../icons/EyeOff";
 import { PinFill } from "../icons/PinFill";
 import { PinOutline } from "../icons/PinOutline";
-import { Display } from "../models/Display";
 import { IconButton } from "./IconButton";
+import { useAppContext } from "./AppContext";
 import "./LayoutControls.css";
 
-interface LayoutControlProps {
-  displays: Display[] | null;
-  isPlayerShown: boolean;
-  onPlayerVisibilityChange: (isShown: boolean) => void;
-}
+interface LayoutControlProps {}
 
-export const LayoutControls = ({
-  displays,
-  isPlayerShown,
-  onPlayerVisibilityChange,
-}: LayoutControlProps) => {
-  const [display, setDisplay] = useState({ name: "", width: 0, height: 0 });
-  const [layout, setLayout] = useState("center");
-  const [zoom, setZoom] = useState(100);
-  const [rotation, setRotation] = useState(0);
-  const [offset, setOffset] = useState({ x: 50, y: 50 });
-  const [isPinned, setIsPinned] = useState(false);
-
-  useEffect(() => {
-    if (displays) {
-      setDisplay(displays.find((d) => d.isPreselected));
-    }
-  }, [displays]);
-
-  useEffect(() => {
-    console.log("Sending layout change:", { layout, zoom, rotation, offset });
-
-    window.api.sendSelectedLayout({ type: layout, zoom, rotation, offset });
-  }, [layout, zoom, rotation, offset]);
+export const LayoutControls = ({}: LayoutControlProps) => {
+  const {
+    displays,
+    isPlayerShown,
+    display,
+    layout,
+    zoom,
+    rotation,
+    isPinned,
+    setLayout,
+    setZoom,
+    setRotation,
+    setOffset,
+    onPinnedChanged,
+    onPlayerVisibilityChange,
+    onSelectedDisplayChange,
+  } = useAppContext();
 
   return (
     <div className="layout-controls_wrapper">
@@ -45,10 +34,7 @@ export const LayoutControls = ({
           <select
             className="layout-controls_display-select"
             value={display.name}
-            onChange={(e) => {
-              setDisplay(displays.find((d) => d.name === e.target.value));
-              window.api.sendSelectedDisplay(e.target.value);
-            }}
+            onChange={(e) => onSelectedDisplayChange(e.target.value)}
           >
             {displays.map((d) => (
               <option key={d.name} value={d.name}>
@@ -60,19 +46,14 @@ export const LayoutControls = ({
         <IconButton
           title={isPinned ? "Unpin window" : "Pin window"}
           isActive={isPinned}
-          onClick={() => {
-            window.api.sendPinnedWindow(!isPinned);
-            setIsPinned(!isPinned);
-          }}
+          onClick={() => onPinnedChanged(!isPinned)}
         >
           {isPinned ? <PinFill /> : <PinOutline />}
         </IconButton>
         <IconButton
           title={isPlayerShown ? "Hide player" : "Show player"}
           isActive={isPlayerShown}
-          onClick={() => {
-            onPlayerVisibilityChange(!isPlayerShown);
-          }}
+          onClick={() => onPlayerVisibilityChange(!isPlayerShown)}
         >
           {isPlayerShown ? <EyeFill /> : <EyeOff />}
         </IconButton>
@@ -203,49 +184,7 @@ export const LayoutControls = ({
           Right
         </button>
       </div>
-      {layout === "custom" ? (
-        <>
-          <span className="layout-controls_title">Position </span>
-          <div className="layout-controls_controls">
-            <span className="layout-controls_range-input">
-              X:{" "}
-              <input
-                type="range"
-                min={0}
-                max={100}
-                step={5}
-                value={offset.x}
-                onChange={(e) => {
-                  setLayout("custom");
-                  setOffset((prevOffset) => ({
-                    ...prevOffset,
-                    x: Number(e.target.value),
-                  }));
-                }}
-              />
-              {offset.x}%
-            </span>
-            <span className="layout-controls_range-input">
-              Y:{" "}
-              <input
-                type="range"
-                min={0}
-                max={100}
-                step={5}
-                value={offset.y}
-                onChange={(e) => {
-                  setLayout("custom");
-                  setOffset((prevOffset) => ({
-                    ...prevOffset,
-                    y: Number(e.target.value),
-                  }));
-                }}
-              />
-              {offset.y}%
-            </span>
-          </div>
-        </>
-      ) : null}
+      {}
     </div>
   );
 };

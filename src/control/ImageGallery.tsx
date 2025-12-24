@@ -1,20 +1,14 @@
 ﻿import { useState } from "react";
-import { Image } from "../models/Image";
 import { ImageGalleryItem } from "./ImageGalleryItem";
 
 import "./ImageGallery.css";
+import { useAppContext } from "./AppContext";
 
-type ImageGalleryProps = {
-  images: Image[];
-  onImageSelect: (image: Image) => void;
-  onImageRemove: (image: Image) => void;
-};
+interface ImageGalleryProps {}
 
-export const ImageGallery = ({
-  images,
-  onImageSelect,
-  onImageRemove,
-}: ImageGalleryProps) => {
+export const ImageGallery = ({}: ImageGalleryProps) => {
+  const { images, onImageSelect, onImageRemove } = useAppContext();
+
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
@@ -36,7 +30,12 @@ export const ImageGallery = ({
               image={image}
               isSelected={index === selectedImageIndex}
               onClick={() => handleImageClick(index)}
-              onRemove={() => onImageRemove(image)}
+              onRemove={() => {
+                onImageRemove(image);
+                if (index === selectedImageIndex) {
+                  setSelectedImageIndex(null);
+                }
+              }}
             />
           ))}
         </div>
