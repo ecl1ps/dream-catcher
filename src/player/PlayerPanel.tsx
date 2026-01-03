@@ -9,7 +9,6 @@ export const PlayerPanel = () => {
     zoom: 100,
     rotation: 0,
   });
-  const [isBackgroundShown, setIsBackgroundShown] = useState<boolean>(true);
 
   useEffect(() => {
     window.api.onNewImage((image) => {

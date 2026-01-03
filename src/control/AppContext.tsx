@@ -24,12 +24,12 @@ interface AppState {
 }
 
 interface AppActions {
-  onImageSelect: (image: Image) => void;
-  onImageRemove: (image: Image) => void;
-  onPinnedChanged: (pinned: boolean) => void;
-  onPlayerVisibilityChange: (isShown: boolean) => void;
-  onSelectedDisplayChange: (displayName: string) => void;
+  selectDisplay: (displayName: string) => void;
+  removeImage: (image: Image) => void;
 
+  setSelectedImage: (image: Image) => void;
+  setIsPinned: (pinned: boolean) => void;
+  setIsPlayerShown: (isShown: boolean) => void;
   setLayout: React.Dispatch<React.SetStateAction<string>>;
   setZoom: React.Dispatch<React.SetStateAction<number>>;
   setRotation: React.Dispatch<React.SetStateAction<number>>;
@@ -62,6 +62,19 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [isBackgroundShown, setIsBackgroundShown] = useState(true);
 
   const isImageSideways = rotation % 180 !== 0;
+
+  const selectDisplay = (displayName: string) => {
+    setDisplay(displays.find((d) => d.name === displayName));
+  };
+
+  const removeImage = (image: Image) => {
+    setImages((prevImages) =>
+      prevImages.filter((img) => img.dataUrl !== image.dataUrl),
+    );
+    if (selectedImage?.dataUrl === image.dataUrl) {
+      setSelectedImage(null);
+    }
+  };
 
   useEffect(() => {
     // Example of listening for new images from the main process
@@ -113,44 +126,29 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     window.api.sendSelectedLayout({ type: layout, zoom, rotation, offset });
   }, [layout, zoom, rotation, offset]);
 
-  const onPinnedChanged = (pinned: boolean) => {
-    setIsPinned(pinned);
-    window.api.sendPinnedWindow(pinned);
-  };
+  useEffect(() => {
+    window.api.sendPinnedWindow(isPinned);
+  }, [isPinned]);
 
-  const onPlayerVisibilityChange = (isShown: boolean) => {
-    setIsPlayerShown(isShown);
-    window.api.sendShowPlayer(isShown);
-  };
+  useEffect(() => {
+    window.api.sendShowPlayer(isPlayerShown);
+  }, [isPlayerShown]);
 
-  const onSelectedDisplayChange = (displayName: string) => {
-    setDisplay(displays.find((d) => d.name === displayName));
-    window.api.sendSelectedDisplay(displayName);
-  };
+  useEffect(() => {
+    window.api.sendSelectedDisplay(display.name);
+  }, [display]);
 
-  const onImageSelect = (image: Image) => {
-    window.api.sendSelectedImage(image);
-    setSelectedImage(image);
+  useEffect(() => {
+    window.api.sendSelectedImage(selectedImage);
 
-    if (!image) {
+    if (!selectedImage) {
       return;
     }
 
     if (!isPlayerShown) {
       setIsPlayerShown(true);
-      window.api.sendShowPlayer(true);
     }
-  };
-
-  const onImageRemove = (image: Image) => {
-    setImages((prevImages) =>
-      prevImages.filter((img) => img.dataUrl !== image.dataUrl),
-    );
-    if (selectedImage?.dataUrl === image.dataUrl) {
-      setSelectedImage(null);
-      window.api.sendSelectedImage(null);
-    }
-  };
+  }, [selectedImage]);
 
   const contextValue: AppContextType = {
     // State
@@ -167,17 +165,17 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     isPinned,
 
     // Actions
-    onSelectedDisplayChange,
     setLayout,
     setZoom,
     setRotation,
     setOffset,
     setIsBackgroundShown,
+    setIsPinned,
+    setIsPlayerShown,
+    setSelectedImage,
 
-    onPinnedChanged,
-    onPlayerVisibilityChange,
-    onImageSelect,
-    onImageRemove,
+    selectDisplay,
+    removeImage,
   };
 
   return (

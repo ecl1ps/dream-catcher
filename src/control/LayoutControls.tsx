@@ -26,9 +26,9 @@ export const LayoutControls = ({}: LayoutControlProps) => {
     setRotation,
     setOffset,
     setIsBackgroundShown,
-    onPinnedChanged,
-    onPlayerVisibilityChange,
-    onSelectedDisplayChange,
+    setIsPinned,
+    setIsPlayerShown,
+    selectDisplay,
   } = useAppContext();
 
   return (
@@ -39,7 +39,7 @@ export const LayoutControls = ({}: LayoutControlProps) => {
           <select
             className="layout-controls_display-select"
             value={display.name}
-            onChange={(e) => onSelectedDisplayChange(e.target.value)}
+            onChange={(e) => selectDisplay(e.target.value)}
           >
             {displays.map((d) => (
               <option key={d.name} value={d.name}>
@@ -51,14 +51,14 @@ export const LayoutControls = ({}: LayoutControlProps) => {
         <IconButton
           title={isPinned ? "Unpin window" : "Pin window"}
           isActive={isPinned}
-          onClick={() => onPinnedChanged(!isPinned)}
+          onClick={() => setIsPinned(!isPinned)}
         >
           {isPinned ? <PinFill /> : <PinOutline />}
         </IconButton>
         <IconButton
           title={isPlayerShown ? "Hide player" : "Show player"}
           isActive={isPlayerShown}
-          onClick={() => onPlayerVisibilityChange(!isPlayerShown)}
+          onClick={() => setIsPlayerShown(!isPlayerShown)}
         >
           {isPlayerShown ? <EyeFill /> : <EyeOff />}
         </IconButton>

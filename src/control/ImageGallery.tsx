@@ -7,7 +7,7 @@ import { useAppContext } from "./AppContext";
 interface ImageGalleryProps {}
 
 export const ImageGallery = ({}: ImageGalleryProps) => {
-  const { images, onImageSelect, onImageRemove } = useAppContext();
+  const { images, setSelectedImage, removeImage } = useAppContext();
 
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
@@ -15,7 +15,7 @@ export const ImageGallery = ({}: ImageGalleryProps) => {
 
   const handleImageClick = (index: number) => {
     setSelectedImageIndex(index);
-    onImageSelect(images[index]);
+    setSelectedImage(images[index]);
   };
 
   return (
@@ -31,7 +31,7 @@ export const ImageGallery = ({}: ImageGalleryProps) => {
               isSelected={index === selectedImageIndex}
               onClick={() => handleImageClick(index)}
               onRemove={() => {
-                onImageRemove(image);
+                removeImage(image);
                 if (index === selectedImageIndex) {
                   setSelectedImageIndex(null);
                 }
