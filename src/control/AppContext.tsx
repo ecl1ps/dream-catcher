@@ -8,6 +8,10 @@
 import { Display } from "../models/Display";
 import { Image } from "../models/Image";
 import { calculateMaxZoom } from "./calculateMaxZoom";
+import {
+  loadConfigurationData,
+  saveConfigurationData,
+} from "./storage/configuration";
 
 interface AppState {
   images: Image[];
@@ -92,6 +96,17 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     window.api.onDisplayList((displays) => {
       setDisplays(displays);
     });
+
+    // Load stored values or use defaults
+    const configData = loadConfigurationData();
+    if (configData) {
+      setLayout(configData.layout);
+      setZoom(configData.zoom);
+      setRotation(configData.rotation);
+      setOffset(configData.offset);
+      setIsPinned(configData.isPinned);
+      setIsBackgroundShown(configData.isBackgroundShown);
+    }
   }, []);
 
   useEffect(() => {
@@ -149,6 +164,19 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       setIsPlayerShown(true);
     }
   }, [selectedImage]);
+
+  // Save context data to localStorage whenever relevant state changes
+  useEffect(() => {
+    const contextData = {
+      layout,
+      zoom,
+      rotation,
+      offset,
+      isBackgroundShown,
+      isPinned,
+    };
+    saveConfigurationData(contextData);
+  }, [layout, zoom, rotation, offset, isBackgroundShown, isPinned]);
 
   const contextValue: AppContextType = {
     // State
