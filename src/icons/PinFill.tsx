@@ -1,6 +1,4 @@
-﻿// https://iconbuddy.com/
-
-type PinFillProps = {
+﻿type PinFillProps = {
   size?: string;
 };
 

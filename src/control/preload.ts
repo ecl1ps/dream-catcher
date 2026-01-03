@@ -23,10 +23,12 @@ contextBridge.exposeInMainWorld("api", {
     port?.postMessage({ type: "selected-image", payload: image }),
   sendSelectedDisplay: (display: string) =>
     ipcRenderer.send("selected-display", display),
-  sendPinnedWindow: (isPinned: boolean) =>
-    ipcRenderer.send("pinned-window", isPinned),
   sendShowPlayer: (isShown: boolean) =>
     ipcRenderer.send("show-player", isShown),
+  sendShowBackground: (isShown: boolean) =>
+    port?.postMessage({ type: "show-background", payload: isShown }),
+  sendPinnedWindow: (isPinned: boolean) =>
+    ipcRenderer.send("pinned-window", isPinned),
   onNewImage: (callback: (data: Image) => void) => {
     ipcRenderer.on("new-image", (event, image: Image) => callback(image));
   },

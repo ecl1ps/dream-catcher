@@ -4,6 +4,9 @@ import { PinFill } from "../icons/PinFill";
 import { PinOutline } from "../icons/PinOutline";
 import { IconButton } from "./IconButton";
 import { useAppContext } from "./AppContext";
+import { RoundStickerFill } from "../icons/RoundStickerFill";
+import { RoundSticker } from "../icons/RoundSticker";
+
 import "./LayoutControls.css";
 
 interface LayoutControlProps {}
@@ -11,16 +14,18 @@ interface LayoutControlProps {}
 export const LayoutControls = ({}: LayoutControlProps) => {
   const {
     displays,
-    isPlayerShown,
     display,
     layout,
     zoom,
     rotation,
+    isPlayerShown,
+    isBackgroundShown,
     isPinned,
     setLayout,
     setZoom,
     setRotation,
     setOffset,
+    setIsBackgroundShown,
     onPinnedChanged,
     onPlayerVisibilityChange,
     onSelectedDisplayChange,
@@ -56,6 +61,13 @@ export const LayoutControls = ({}: LayoutControlProps) => {
           onClick={() => onPlayerVisibilityChange(!isPlayerShown)}
         >
           {isPlayerShown ? <EyeFill /> : <EyeOff />}
+        </IconButton>
+        <IconButton
+          title={isBackgroundShown ? "Hide background" : "Show background"}
+          isActive={isBackgroundShown}
+          onClick={() => setIsBackgroundShown(!isBackgroundShown)}
+        >
+          {isBackgroundShown ? <RoundStickerFill /> : <RoundSticker />}
         </IconButton>
       </div>
       <span className="layout-controls_title">Layout</span>

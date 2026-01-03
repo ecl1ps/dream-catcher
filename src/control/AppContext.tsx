@@ -12,13 +12,14 @@ import { calculateMaxZoom } from "./calculateMaxZoom";
 interface AppState {
   images: Image[];
   displays: Display[] | null;
-  isPlayerShown: boolean;
   selectedImage: Image | null;
   display: { name: string; width: number; height: number };
   layout: string;
   zoom: number;
   rotation: number;
   offset: { x: number; y: number };
+  isPlayerShown: boolean;
+  isBackgroundShown: boolean;
   isPinned: boolean;
 }
 
@@ -33,6 +34,7 @@ interface AppActions {
   setZoom: React.Dispatch<React.SetStateAction<number>>;
   setRotation: React.Dispatch<React.SetStateAction<number>>;
   setOffset: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
+  setIsBackgroundShown: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface AppContextType extends AppState, AppActions {}
@@ -57,6 +59,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [rotation, setRotation] = useState(0);
   const [offset, setOffset] = useState({ x: 50, y: 50 });
   const [isPinned, setIsPinned] = useState(false);
+  const [isBackgroundShown, setIsBackgroundShown] = useState(true);
 
   const isImageSideways = rotation % 180 !== 0;
 
@@ -83,6 +86,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       setDisplay(displays.find((d) => d.isPreselected));
     }
   }, [displays]);
+
+  useEffect(() => {
+    window.api.sendShowBackground(isBackgroundShown);
+  }, [isBackgroundShown]);
 
   useEffect(() => {
     if (!selectedImage) {
@@ -149,13 +156,14 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     // State
     images,
     displays,
-    isPlayerShown,
     selectedImage,
     display,
     layout,
     zoom,
     rotation,
     offset,
+    isPlayerShown,
+    isBackgroundShown,
     isPinned,
 
     // Actions
@@ -164,6 +172,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setZoom,
     setRotation,
     setOffset,
+    setIsBackgroundShown,
 
     onPinnedChanged,
     onPlayerVisibilityChange,

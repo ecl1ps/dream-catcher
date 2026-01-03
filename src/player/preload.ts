@@ -10,6 +10,7 @@ let port: MessagePort | null = null;
 const registeredCallbacks = {
   onNewImage: (data: Image) => {},
   onLayoutUpdate: (layout: Layout) => {},
+  onBackgroundToggle: (isShown: boolean) => {},
 };
 
 ipcRenderer.on("port", (e) => {
@@ -23,6 +24,9 @@ ipcRenderer.on("port", (e) => {
       case "selected-layout":
         registeredCallbacks.onLayoutUpdate(messageEvent.data.payload);
         break;
+      case "show-background":
+        registeredCallbacks.onBackgroundToggle(messageEvent.data.payload);
+        break;
     }
   };
 });
@@ -33,5 +37,8 @@ contextBridge.exposeInMainWorld("api", {
   },
   onLayoutUpdate: (callback: (layout: Layout) => void) => {
     registeredCallbacks.onLayoutUpdate = callback;
+  },
+  onBackgroundToggle: (callback: (isShown: boolean) => void) => {
+    registeredCallbacks.onBackgroundToggle = callback;
   },
 });

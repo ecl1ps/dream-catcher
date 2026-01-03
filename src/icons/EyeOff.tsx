@@ -1,6 +1,4 @@
-﻿// https://iconbuddy.com/
-
-type EyeOffProps = {
+﻿type EyeOffProps = {
   size?: string;
 };
 

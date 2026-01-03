@@ -9,6 +9,7 @@ export const PlayerPanel = () => {
     zoom: 100,
     rotation: 0,
   });
+  const [isBackgroundShown, setIsBackgroundShown] = useState<boolean>(true);
 
   useEffect(() => {
     window.api.onNewImage((image) => {
@@ -18,6 +19,10 @@ export const PlayerPanel = () => {
     window.api.onLayoutUpdate((layout) => {
       console.log("Received layout update:", layout);
       setLayout(layout);
+    });
+    window.api.onBackgroundToggle((isShown) => {
+      console.log("Received background toggle:", isShown);
+      document.body.classList.toggle("transparent", !isShown);
     });
   }, []);
 

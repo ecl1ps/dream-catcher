@@ -1,6 +1,4 @@
-﻿// https://iconbuddy.com/
-
-type EyeFillProps = {
+﻿type EyeFillProps = {
   size?: string;
 };
 

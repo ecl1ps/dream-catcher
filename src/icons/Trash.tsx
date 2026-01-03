@@ -1,6 +1,4 @@
-﻿// https://iconbuddy.com/
-
-type TrashProps = {
+﻿type TrashProps = {
   size?: string;
 };
 
