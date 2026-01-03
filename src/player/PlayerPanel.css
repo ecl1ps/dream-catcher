@@ -1,0 +1,18 @@
+﻿.player-panel_text-wrapper {
+  display: inline-block;
+  background-color: #222;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 20px;
+  box-shadow: 0 0 10px #111;
+
+  table {
+    border-collapse: collapse;
+
+    td,
+    th {
+      border: 1px solid #999;
+      padding: 5px 10px;
+    }
+  }
+}

@@ -18,6 +18,7 @@ export const LayoutControls = ({}: LayoutControlProps) => {
     layout,
     zoom,
     rotation,
+    offset,
     isPlayerShown,
     isBackgroundShown,
     isPinned,
@@ -37,7 +38,6 @@ export const LayoutControls = ({}: LayoutControlProps) => {
       <div className="layout-controls_controls">
         {displays && (
           <select
-            className="layout-controls_display-select"
             value={display.name}
             onChange={(e) => selectDisplay(e.target.value)}
           >
@@ -73,11 +73,7 @@ export const LayoutControls = ({}: LayoutControlProps) => {
       <span className="layout-controls_title">Layout</span>
       <div className="layout-controls_controls">
         <button
-          className={
-            layout == "left-third"
-              ? "layout-controls_layout-button layout-controls_layout-button--is-selected"
-              : "layout-controls_layout-button"
-          }
+          className={layout == "left-third" ? "is-selected" : ""}
           onClick={() => {
             setLayout("left-third");
             setOffset({ x: 33, y: 50 });
@@ -86,11 +82,7 @@ export const LayoutControls = ({}: LayoutControlProps) => {
           Left-third
         </button>
         <button
-          className={
-            layout == "center"
-              ? "layout-controls_layout-button layout-controls_layout-button--is-selected"
-              : "layout-controls_layout-button"
-          }
+          className={layout == "center" ? "is-selected" : ""}
           onClick={() => {
             setLayout("center");
             setOffset({ x: 50, y: 50 });
@@ -99,11 +91,7 @@ export const LayoutControls = ({}: LayoutControlProps) => {
           Center
         </button>
         <button
-          className={
-            layout == "right-third"
-              ? "layout-controls_layout-button layout-controls_layout-button--is-selected"
-              : "layout-controls_layout-button"
-          }
+          className={layout == "right-third" ? "is-selected" : ""}
           onClick={() => {
             setLayout("right-third");
             setOffset({ x: 67, y: 50 });
@@ -119,11 +107,7 @@ export const LayoutControls = ({}: LayoutControlProps) => {
           Fullscreen
         </button>*/}
         <button
-          className={
-            layout == "custom"
-              ? "layout-controls_layout-button layout-controls_layout-button--is-selected"
-              : "layout-controls_layout-button"
-          }
+          className={layout == "custom" ? "is-selected" : ""}
           onClick={() => {
             setLayout("custom");
           }}
@@ -148,11 +132,7 @@ export const LayoutControls = ({}: LayoutControlProps) => {
       <span className="layout-controls_title">Rotation</span>
       <div className="layout-controls_controls">
         <button
-          className={
-            rotation == 0
-              ? "layout-controls_layout-button layout-controls_layout-button--is-selected"
-              : "layout-controls_layout-button"
-          }
+          className={rotation == 0 ? "is-selected" : ""}
           onClick={() => {
             setRotation(0);
           }}
@@ -160,11 +140,7 @@ export const LayoutControls = ({}: LayoutControlProps) => {
           Down
         </button>
         <button
-          className={
-            rotation == 90
-              ? "layout-controls_layout-button layout-controls_layout-button--is-selected"
-              : "layout-controls_layout-button"
-          }
+          className={rotation == 90 ? "is-selected" : ""}
           onClick={() => {
             setRotation(90);
           }}
@@ -172,11 +148,7 @@ export const LayoutControls = ({}: LayoutControlProps) => {
           Left
         </button>
         <button
-          className={
-            rotation == 180
-              ? "layout-controls_layout-button layout-controls_layout-button--is-selected"
-              : "layout-controls_layout-button"
-          }
+          className={rotation == 180 ? "is-selected" : ""}
           onClick={() => {
             setRotation(180);
           }}
@@ -184,11 +156,7 @@ export const LayoutControls = ({}: LayoutControlProps) => {
           Up
         </button>
         <button
-          className={
-            rotation == 270
-              ? "layout-controls_layout-button layout-controls_layout-button--is-selected"
-              : "layout-controls_layout-button"
-          }
+          className={rotation == 270 ? "is-selected" : ""}
           onClick={() => {
             setRotation(270);
           }}
@@ -196,7 +164,49 @@ export const LayoutControls = ({}: LayoutControlProps) => {
           Right
         </button>
       </div>
-      {}
+      {layout === "custom" ? (
+        <>
+          <span className="layout-controls_title">Position </span>
+          <div className="layout-controls_controls">
+            <span className="layout-controls_range-input">
+              X:{" "}
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={5}
+                value={offset.x}
+                onChange={(e) => {
+                  setLayout("custom");
+                  setOffset((prevOffset) => ({
+                    ...prevOffset,
+                    x: Number(e.target.value),
+                  }));
+                }}
+              />
+              {offset.x}%
+            </span>
+            <span className="layout-controls_range-input">
+              Y:{" "}
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={5}
+                value={offset.y}
+                onChange={(e) => {
+                  setLayout("custom");
+                  setOffset((prevOffset) => ({
+                    ...prevOffset,
+                    y: Number(e.target.value),
+                  }));
+                }}
+              />
+              {offset.y}%
+            </span>
+          </div>
+        </>
+      ) : null}
     </div>
   );
 };

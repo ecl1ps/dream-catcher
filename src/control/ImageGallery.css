@@ -1,5 +1,6 @@
 ﻿.image-gallery_wrapper {
   padding: 10px;
+  background-color: #111;
 }
 
 .image-gallery-items_wrapper {
@@ -8,8 +9,4 @@
   overflow-y: auto;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 8px;
-}
-
-.image-gallery_header {
-  margin: 0;
 }

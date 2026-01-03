@@ -1,4 +1,4 @@
-import { app, screen, BrowserWindow } from "electron";
+import { app, screen, BrowserWindow, session } from "electron";
 import { preselectDisplay } from "./preselectDisplay";
 import { setupIpc } from "./setupIpc";
 
@@ -94,6 +94,17 @@ const createWindows = () => {
 
 app.whenReady().then(() => {
   const { controlWindow, playerWindow } = createWindows();
+
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        "Content-Security-Policy": [
+          "default-src 'self' 'unsafe-inline' data:; img-src 'self' https: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval';",
+        ],
+      },
+    });
+  });
 
   setupIpc(controlWindow, playerWindow);
 });

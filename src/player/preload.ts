@@ -4,6 +4,7 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { Layout } from "../models/Layout";
 import { Image } from "../models/Image";
+import { ViewType } from "../models/ViewType";
 
 let port: MessagePort | null = null;
 
@@ -11,6 +12,8 @@ const registeredCallbacks = {
   onNewImage: (data: Image) => {},
   onLayoutUpdate: (layout: Layout) => {},
   onBackgroundToggle: (isShown: boolean) => {},
+  onTextContent: (text: string) => {},
+  onSelectedView: (view: ViewType) => {},
 };
 
 ipcRenderer.on("port", (e) => {
@@ -27,6 +30,12 @@ ipcRenderer.on("port", (e) => {
       case "show-background":
         registeredCallbacks.onBackgroundToggle(messageEvent.data.payload);
         break;
+      case "text-content":
+        registeredCallbacks.onTextContent(messageEvent.data.payload);
+        break;
+      case "selected-view":
+        registeredCallbacks.onSelectedView(messageEvent.data.payload);
+        break;
     }
   };
 });
@@ -40,5 +49,11 @@ contextBridge.exposeInMainWorld("api", {
   },
   onBackgroundToggle: (callback: (isShown: boolean) => void) => {
     registeredCallbacks.onBackgroundToggle = callback;
+  },
+  onTextContent: (callback: (text: string) => void) => {
+    registeredCallbacks.onTextContent = callback;
+  },
+  onSelectedView: (callback: (view: ViewType) => void) => {
+    registeredCallbacks.onSelectedView = callback;
   },
 });

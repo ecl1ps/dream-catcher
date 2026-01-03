@@ -1,0 +1,22 @@
+﻿.text-editor_wrapper {
+  padding: 10px;
+  background-color: #111;
+
+  > .text-editor_editor {
+    width: calc(100vw - 40px);
+    height: calc(100vh - 221px);
+    background-color: #222;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    font-family: "Courier New", Courier, monospace;
+    resize: none;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px #007bff;
+    }
+  }
+}

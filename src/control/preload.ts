@@ -5,6 +5,7 @@ import { contextBridge, ipcRenderer } from "electron";
 import { Layout } from "../models/Layout";
 import { Display } from "../models/Display";
 import { Image } from "../models/Image";
+import { ViewType } from "../models/ViewType";
 
 let port: MessagePort | null = null;
 
@@ -21,12 +22,16 @@ contextBridge.exposeInMainWorld("api", {
     port?.postMessage({ type: "selected-layout", payload: layout }),
   sendSelectedImage: (image: Image) =>
     port?.postMessage({ type: "selected-image", payload: image }),
+  sendTextContent: (text: string) =>
+    port?.postMessage({ type: "text-content", payload: text }),
   sendSelectedDisplay: (display: string) =>
     ipcRenderer.send("selected-display", display),
   sendShowPlayer: (isShown: boolean) =>
     ipcRenderer.send("show-player", isShown),
   sendShowBackground: (isShown: boolean) =>
     port?.postMessage({ type: "show-background", payload: isShown }),
+  sendSelectedView: (view: ViewType) =>
+    port?.postMessage({ type: "selected-view", payload: view }),
   sendPinnedWindow: (isPinned: boolean) =>
     ipcRenderer.send("pinned-window", isPinned),
   onNewImage: (callback: (data: Image) => void) => {

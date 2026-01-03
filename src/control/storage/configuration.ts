@@ -1,10 +1,14 @@
-﻿type StoredConfigurationData = {
+﻿import { ViewType } from "../../models/ViewType";
+
+type StoredConfigurationData = {
   layout: string;
   zoom: number;
   rotation: number;
   offset: { x: number; y: number };
   isBackgroundShown: boolean;
   isPinned: boolean;
+  view: ViewType;
+  textContent: string;
 };
 
 const CONFIG_STORAGE_KEY = "dreamcatcher-configuration";

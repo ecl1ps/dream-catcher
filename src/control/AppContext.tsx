@@ -7,11 +7,12 @@
 } from "react";
 import { Display } from "../models/Display";
 import { Image } from "../models/Image";
-import { calculateMaxZoom } from "./calculateMaxZoom";
+import { calculateMaxZoom } from "./utils/calculateMaxZoom";
 import {
   loadConfigurationData,
   saveConfigurationData,
 } from "./storage/configuration";
+import { ViewType } from "../models/ViewType";
 
 interface AppState {
   images: Image[];
@@ -25,6 +26,8 @@ interface AppState {
   isPlayerShown: boolean;
   isBackgroundShown: boolean;
   isPinned: boolean;
+  view: ViewType;
+  textContent: string;
 }
 
 interface AppActions {
@@ -39,6 +42,8 @@ interface AppActions {
   setRotation: React.Dispatch<React.SetStateAction<number>>;
   setOffset: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
   setIsBackgroundShown: React.Dispatch<React.SetStateAction<boolean>>;
+  setView: React.Dispatch<React.SetStateAction<ViewType>>;
+  setTextContent: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface AppContextType extends AppState, AppActions {}
@@ -50,20 +55,23 @@ interface AppProviderProps {
 }
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
-  // ControlPanel state
-  const [images, setImages] = useState<Image[]>([]);
-  const [displays, setDisplays] = useState<Display[] | null>(null);
-  const [isPlayerShown, setIsPlayerShown] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
-
   // LayoutControls state
+  const [displays, setDisplays] = useState<Display[] | null>(null);
   const [display, setDisplay] = useState({ name: "", width: 0, height: 0 });
+  const [isPlayerShown, setIsPlayerShown] = useState(false);
+  const [isPinned, setIsPinned] = useState(false);
+  const [isBackgroundShown, setIsBackgroundShown] = useState(true);
+
   const [layout, setLayout] = useState("center");
   const [zoom, setZoom] = useState(100);
   const [rotation, setRotation] = useState(0);
   const [offset, setOffset] = useState({ x: 50, y: 50 });
-  const [isPinned, setIsPinned] = useState(false);
-  const [isBackgroundShown, setIsBackgroundShown] = useState(true);
+
+  // Content state
+  const [view, setView] = useState<ViewType>("image");
+  const [images, setImages] = useState<Image[]>([]);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
+  const [textContent, setTextContent] = useState<string>("");
 
   const isImageSideways = rotation % 180 !== 0;
 
@@ -106,6 +114,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       setOffset(configData.offset);
       setIsPinned(configData.isPinned);
       setIsBackgroundShown(configData.isBackgroundShown);
+      setView(configData.view);
+      setTextContent(configData.textContent);
     }
   }, []);
 
@@ -165,6 +175,14 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }
   }, [selectedImage]);
 
+  useEffect(() => {
+    window.api.sendTextContent(textContent);
+  }, [textContent]);
+
+  useEffect(() => {
+    window.api.sendSelectedView(view);
+  }, [view]);
+
   // Save context data to localStorage whenever relevant state changes
   useEffect(() => {
     const contextData = {
@@ -174,9 +192,20 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       offset,
       isBackgroundShown,
       isPinned,
+      view,
+      textContent,
     };
     saveConfigurationData(contextData);
-  }, [layout, zoom, rotation, offset, isBackgroundShown, isPinned]);
+  }, [
+    layout,
+    zoom,
+    rotation,
+    offset,
+    isBackgroundShown,
+    isPinned,
+    view,
+    textContent,
+  ]);
 
   const contextValue: AppContextType = {
     // State
@@ -191,6 +220,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     isPlayerShown,
     isBackgroundShown,
     isPinned,
+    view,
+    textContent,
 
     // Actions
     setLayout,
@@ -201,6 +232,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setIsPinned,
     setIsPlayerShown,
     setSelectedImage,
+    setView,
+    setTextContent,
 
     selectDisplay,
     removeImage,

@@ -1,6 +1,7 @@
 ﻿import { createRoot } from "react-dom/client";
 import { ControlPanel } from "./ControlPanel";
 import { AppProvider } from "./AppContext";
+import "../global.css";
 
 const root = createRoot(document.body);
 root.render(
