@@ -4,12 +4,9 @@ import { MakerZIP } from "@electron-forge/maker-zip";
 import { MakerDeb } from "@electron-forge/maker-deb";
 import { MakerRpm } from "@electron-forge/maker-rpm";
 import { AutoUnpackNativesPlugin } from "@electron-forge/plugin-auto-unpack-natives";
-import { WebpackPlugin } from "@electron-forge/plugin-webpack";
+import { VitePlugin } from "@electron-forge/plugin-vite";
 import { FusesPlugin } from "@electron-forge/plugin-fuses";
 import { FuseV1Options, FuseVersion } from "@electron/fuses";
-
-import { mainConfig } from "./webpack.main.config";
-import { rendererConfig } from "./webpack.renderer.config";
 
 const config: ForgeConfig = {
   packagerConfig: {
@@ -24,29 +21,38 @@ const config: ForgeConfig = {
   ],
   plugins: [
     new AutoUnpackNativesPlugin({}),
-    new WebpackPlugin({
-      mainConfig,
-      renderer: {
-        config: rendererConfig,
-        entryPoints: [
-          {
-            html: "./src/index.html",
-            js: "./src/control/renderer.ts",
-            name: "control_window",
-            preload: {
-              js: "./src/control/preload.ts",
-            },
-          },
-          {
-            html: "./src/index.html",
-            js: "./src/player/renderer.ts",
-            name: "player_window",
-            preload: {
-              js: "./src/player/preload.ts",
-            },
-          },
-        ],
-      },
+    new VitePlugin({
+      // `build` can specify multiple entry builds, which can be Main process, Preload scripts and Worker process, etc.
+      // If you are familiar with Vite configuration, it will look really familiar.
+      build: [
+        {
+          // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
+          entry: "src/main/main.ts",
+          config: "vite.main.config.ts",
+        },
+        {
+          entry: "src/control/preload.ts",
+          config: "vite.control-preload.config.ts",
+        },
+        {
+          entry: "src/player/preload.ts",
+          config: "vite.player-preload.config.ts",
+        },
+        /*{
+          entry: "index.html",
+          config: "vite.webapp.config.ts",
+        },*/
+      ],
+      renderer: [
+        {
+          name: "control_window",
+          config: "vite.control-renderer.config.ts",
+        },
+        {
+          name: "player_window",
+          config: "vite.player-renderer.config.ts",
+        },
+      ],
     }),
     // Fuses are used to enable/disable various Electron functionality
     // at package time, before code signing the application
