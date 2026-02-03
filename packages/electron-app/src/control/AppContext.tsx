@@ -5,14 +5,14 @@
   useState,
   ReactNode,
 } from "react";
-import { Display } from "../models/Display";
-import { Image } from "../models/Image";
+import { Display } from "../types/Display";
+import { Image } from "../types/Image";
 import { calculateMaxZoom } from "./utils/calculateMaxZoom";
 import {
   loadConfigurationData,
   saveConfigurationData,
 } from "./storage/configuration";
-import { ViewType } from "../models/ViewType";
+import { ViewType } from "../types/ViewType";
 
 interface AppState {
   images: Image[];

@@ -1,4 +1,4 @@
-﻿import { ViewType } from "../../models/ViewType";
+﻿import { ViewType } from "../../types/ViewType";
 
 type StoredConfigurationData = {
   layout: string;

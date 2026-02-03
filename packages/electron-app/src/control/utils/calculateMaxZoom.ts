@@ -1,4 +1,4 @@
-﻿import { Image } from "../../models/Image";
+﻿import { Image } from "../../types/Image";
 
 export function calculateMaxZoom(
   image: Image,

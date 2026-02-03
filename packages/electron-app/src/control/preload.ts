@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { contextBridge, ipcRenderer } from "electron";
-import { Layout } from "../models/Layout";
-import { Display } from "../models/Display";
-import { Image } from "../models/Image";
-import { ViewType } from "../models/ViewType";
+import { Layout } from "../types/Layout";
+import { Display } from "../types/Display";
+import { Image } from "../types/Image";
+import { ViewType } from "../types/ViewType";
 
 let port: MessagePort | null = null;
 

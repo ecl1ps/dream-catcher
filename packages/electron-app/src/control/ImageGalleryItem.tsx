@@ -1,5 +1,5 @@
 ﻿import { Trash } from "../icons/Trash";
-import { Image } from "../models/Image";
+import { Image } from "../types/Image";
 import { IconButton } from "./IconButton";
 import "./ImageGalleryItem.css";
 
