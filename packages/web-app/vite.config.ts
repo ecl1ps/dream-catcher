@@ -11,9 +11,8 @@ export default defineConfig({
   css: {
     postcss: {},
   },
-  root: "webapp",
   build: {
-    outDir: resolve(__dirname, ".vite/build/webapp"),
+    outDir: resolve(__dirname, "dist"),
     assetsDir: "static",
     rollupOptions: {
       output: {

@@ -1,4 +1,5 @@
-﻿import React, { useState, useEffect } from "react";
+﻿import { SERVER_PORT, SERVER_URL } from "@ecl1ps/dreamcatcher-shared";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
 interface AppInfo {
@@ -16,7 +17,12 @@ function App() {
   useEffect(() => {
     const fetchAppInfo = async () => {
       try {
-        const response = await fetch("/api/app-info");
+        const response = await fetch(
+          new URL(
+            "/api/app-info",
+            `http://${window.location.hostname}:${SERVER_PORT}`,
+          ),
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

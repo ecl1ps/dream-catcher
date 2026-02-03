@@ -6,7 +6,7 @@
   type BrowserWindow,
 } from "electron";
 import ClipboardListener from "../clipboard-event/index";
-import { Image } from "../models/Image";
+import { Image } from "../types/Image";
 import { preselectDisplay } from "./preselectDisplay";
 
 export function setupIpc(

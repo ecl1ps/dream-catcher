@@ -4,8 +4,8 @@ import { app } from "electron";
 //import fastifyStatic from "@fastify/static";
 
 export interface WebServerConfig {
-  port?: number;
-  host?: string;
+  port: number;
+  host: string;
 }
 
 export class WebServer {
@@ -14,9 +14,9 @@ export class WebServer {
   private host: string;
   private isRunning = false;
 
-  constructor(config: WebServerConfig = {}) {
-    this.port = config.port || 3000;
-    this.host = config.host || "127.0.0.1";
+  constructor(config: WebServerConfig) {
+    this.port = config.port;
+    this.host = config.host;
 
     this.server = fastify({
       logger: {
@@ -26,16 +26,27 @@ export class WebServer {
   }
 
   async initialize() {
+    // Enable CORS for all origins
+    await this.server.register(
+      (await import("@fastify/cors")).default,
+      {
+        origin: true, // Allow all origins
+        methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
+        credentials: true
+      }
+    );
+
     await this.setupRoutes();
     this.setupErrorHandling();
   }
 
   private async setupRoutes() {
     // Register static file serving for the React web app
-    await this.server.register((await import("@fastify/static")).default, {
+    /*await this.server.register((await import("@fastify/static")).default, {
       root: path.join(__dirname, "..", "..", ".vite", "build", "webapp"),
       prefix: "/",
-    });
+    });*/
 
     // API routes
     this.server.get("/api/health", async () => {
@@ -91,10 +102,6 @@ export class WebServer {
       this.isRunning = false;
       console.log("Web server stopped");
     }
-  }
-
-  getUrl(): string {
-    return `http://${this.host}:${this.port}`;
   }
 
   isServerRunning(): boolean {

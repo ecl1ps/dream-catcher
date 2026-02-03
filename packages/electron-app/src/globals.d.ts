@@ -1,7 +1,7 @@
-﻿//import { Layout } from "./models/Layout";
-//import { Image } from "./models/Image";
-//import { Display } from "./models/Display";
-// import { ViewType } from "./models/ViewType";
+﻿//import { Layout } from "./types/Layout";
+//import { Image } from "./types/Image";
+//import { Display } from "./types/Display";
+//import { ViewType } from "./types/ViewType";
 
 interface Window {
   api: {

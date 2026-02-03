@@ -1,3 +1,4 @@
+import { SERVER_HOST, SERVER_PORT } from "@ecl1ps/dreamcatcher-shared";
 import { app, screen, BrowserWindow, session } from "electron";
 import { preselectDisplay } from "./preselectDisplay";
 import { setupIpc } from "./setupIpc";
@@ -129,7 +130,7 @@ app.whenReady().then(async () => {
   // Start the web server
   if (enableWebServer) {
     try {
-      webServer = new WebServer({ port: 8080, host: "127.0.0.1" });
+      webServer = new WebServer({ port: SERVER_PORT, host: SERVER_HOST });
       const webServerUrl = await webServer.start();
       console.log(`Web interface available at: ${webServerUrl}`);
     } catch (error) {

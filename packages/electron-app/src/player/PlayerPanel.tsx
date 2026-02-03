@@ -1,6 +1,6 @@
 ﻿import { useEffect, useState } from "react";
-import { Layout } from "../models/Layout";
-import { Image } from "../models/Image";
+import { Layout } from "../types/Layout";
+import { Image } from "../types/Image";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "./PlayerPanel.css";
