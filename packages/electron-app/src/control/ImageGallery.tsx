@@ -9,9 +9,7 @@ interface ImageGalleryProps {}
 export const ImageGallery = ({}: ImageGalleryProps) => {
   const { images, setSelectedImage, removeImage } = useAppContext();
 
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
-    null,
-  );
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   const handleImageClick = (index: number) => {
     setSelectedImageIndex(index);

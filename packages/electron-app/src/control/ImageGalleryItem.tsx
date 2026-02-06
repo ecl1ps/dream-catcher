@@ -21,10 +21,7 @@ export const ImageGalleryItem = ({
       onClick={onClick}
       className={`image-gallery-item_wrapper ${isSelected ? "image-gallery-item_selected" : ""}`}
     >
-      <img
-        src={image.dataUrl}
-        alt={`Image Width: ${image.width}px Height: ${image.height}px`}
-      />
+      <img src={image.dataUrl} alt={`Image Width: ${image.width}px Height: ${image.height}px`} />
       <div className="image-gallery-item_controls">
         <IconButton
           className="image-gallery-item_remove-button"

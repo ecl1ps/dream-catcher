@@ -18,10 +18,7 @@ function App() {
     const fetchAppInfo = async () => {
       try {
         const response = await fetch(
-          new URL(
-            "/api/app-info",
-            `http://${window.location.hostname}:${SERVER_PORT}`,
-          ),
+          new URL("/api/app-info", `http://${window.location.hostname}:${SERVER_PORT}`),
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -29,9 +26,7 @@ function App() {
         const data = await response.json();
         setAppInfo(data);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to fetch app info",
-        );
+        setError(err instanceof Error ? err.message : "Failed to fetch app info");
       } finally {
         setLoading(false);
       }

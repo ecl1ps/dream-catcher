@@ -12,6 +12,15 @@
     "lint": {
       "outputs": []
     },
+    "lint:fix": {
+      "outputs": []
+    },
+    "format": {
+      "outputs": []
+    },
+    "format:check": {
+      "outputs": []
+    },
     "type-check": {
       "dependsOn": ["^build"],
       "outputs": []

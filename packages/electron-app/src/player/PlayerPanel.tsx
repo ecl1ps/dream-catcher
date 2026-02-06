@@ -52,10 +52,7 @@ export const PlayerPanel = () => {
   if (selectedView === "text" && textContent) {
     const width = `calc(${layout.type === "left-third" || layout.type == "right-third" ? "56" : "90"}${layout.rotation % 180 === 0 ? "vw" : "vh"} / ${layout.zoom / 100})`;
     return (
-      <div
-        className="player-panel_text-wrapper"
-        style={{ ...transforms, maxWidth: width }}
-      >
+      <div className="player-panel_text-wrapper" style={{ ...transforms, maxWidth: width }}>
         <Markdown remarkPlugins={[remarkGfm]}>{textContent}</Markdown>
       </div>
     );

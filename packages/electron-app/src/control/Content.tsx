@@ -11,16 +11,10 @@ export const Content = ({}: ContentProps) => {
   return (
     <>
       <div className="content_header">
-        <button
-          className={view === "image" ? "is-selected" : ""}
-          onClick={() => setView("image")}
-        >
+        <button className={view === "image" ? "is-selected" : ""} onClick={() => setView("image")}>
           Images
         </button>
-        <button
-          className={view === "text" ? "is-selected" : ""}
-          onClick={() => setView("text")}
-        >
+        <button className={view === "text" ? "is-selected" : ""} onClick={() => setView("text")}>
           Text
         </button>
       </div>

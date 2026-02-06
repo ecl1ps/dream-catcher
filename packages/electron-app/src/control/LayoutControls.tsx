@@ -37,10 +37,7 @@ export const LayoutControls = ({}: LayoutControlProps) => {
       <span className="layout-controls_title">Display</span>
       <div className="layout-controls_controls">
         {displays && (
-          <select
-            value={display.name}
-            onChange={(e) => selectDisplay(e.target.value)}
-          >
+          <select value={display.name} onChange={(e) => selectDisplay(e.target.value)}>
             {displays.map((d) => (
               <option key={d.name} value={d.name}>
                 {d.name} ({d.width}x{d.height})

@@ -1,17 +1,8 @@
-﻿import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode,
-} from "react";
+﻿import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { Display } from "../types/Display";
 import { Image } from "../types/Image";
 import { calculateMaxZoom } from "./utils/calculateMaxZoom";
-import {
-  loadConfigurationData,
-  saveConfigurationData,
-} from "./storage/configuration";
+import { loadConfigurationData, saveConfigurationData } from "./storage/configuration";
 import { ViewType } from "../types/ViewType";
 
 interface AppState {
@@ -80,9 +71,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   };
 
   const removeImage = (image: Image) => {
-    setImages((prevImages) =>
-      prevImages.filter((img) => img.dataUrl !== image.dataUrl),
-    );
+    setImages((prevImages) => prevImages.filter((img) => img.dataUrl !== image.dataUrl));
     if (selectedImage?.dataUrl === image.dataUrl) {
       setSelectedImage(null);
     }
@@ -135,10 +124,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }
 
     if (
-      (isImageSideways ? selectedImage.height : selectedImage.width) >
-        display.width ||
-      (isImageSideways ? selectedImage.width : selectedImage.height) >
-        display.height
+      (isImageSideways ? selectedImage.height : selectedImage.width) > display.width ||
+      (isImageSideways ? selectedImage.width : selectedImage.height) > display.height
     ) {
       setZoom(calculateMaxZoom(selectedImage, display, isImageSideways));
     } else {
@@ -196,16 +183,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       textContent,
     };
     saveConfigurationData(contextData);
-  }, [
-    layout,
-    zoom,
-    rotation,
-    offset,
-    isBackgroundShown,
-    isPinned,
-    view,
-    textContent,
-  ]);
+  }, [layout, zoom, rotation, offset, isBackgroundShown, isPinned, view, textContent]);
 
   const contextValue: AppContextType = {
     // State
@@ -239,9 +217,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     removeImage,
   };
 
-  return (
-    <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
-  );
+  return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;
 };
 
 export const useAppContext = () => {

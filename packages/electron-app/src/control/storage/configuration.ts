@@ -21,15 +21,14 @@ export const saveConfigurationData = (data: StoredConfigurationData): void => {
   }
 };
 
-export const loadConfigurationData =
-  (): Partial<StoredConfigurationData> | null => {
-    try {
-      const stored = localStorage.getItem(CONFIG_STORAGE_KEY);
-      if (stored) {
-        return JSON.parse(stored) as StoredConfigurationData;
-      }
-    } catch (error) {
-      console.error("Failed to load context data from localStorage:", error);
+export const loadConfigurationData = (): Partial<StoredConfigurationData> | null => {
+  try {
+    const stored = localStorage.getItem(CONFIG_STORAGE_KEY);
+    if (stored) {
+      return JSON.parse(stored) as StoredConfigurationData;
     }
-    return null;
-  };
+  } catch (error) {
+    console.error("Failed to load context data from localStorage:", error);
+  }
+  return null;
+};

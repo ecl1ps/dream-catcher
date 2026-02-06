@@ -1,22 +1,11 @@
-﻿import {
-  clipboard,
-  ipcMain,
-  MessageChannelMain,
-  screen,
-  type BrowserWindow,
-} from "electron";
+﻿import { clipboard, ipcMain, MessageChannelMain, screen, type BrowserWindow } from "electron";
 import ClipboardListener from "../clipboard-event/index";
 import { Image } from "../types/Image";
 import { preselectDisplay } from "./preselectDisplay";
 
-export function setupIpc(
-  controlWindow: BrowserWindow,
-  playerWindow: BrowserWindow,
-) {
+export function setupIpc(controlWindow: BrowserWindow, playerWindow: BrowserWindow) {
   ipcMain.on("selected-display", (_, displayLabel: string) => {
-    const display = screen
-      .getAllDisplays()
-      .find((d) => d.label === displayLabel);
+    const display = screen.getAllDisplays().find((d) => d.label === displayLabel);
 
     if (display) {
       playerWindow.setBounds(display.bounds);
@@ -35,6 +24,7 @@ export function setupIpc(
     }
   });
 
+  console.log("Starting clipboard listener");
   ClipboardListener.startListening();
 
   ClipboardListener.on("change", async () => {
@@ -76,6 +66,7 @@ export function setupIpc(
 
   controlWindow.once("ready-to-show", () => {
     const preselectedDisplay = preselectDisplay(screen.getAllDisplays());
+    console.log("Preselected display sent");
     controlWindow.webContents.send(
       "display-list",
       screen.getAllDisplays().map((d) => ({

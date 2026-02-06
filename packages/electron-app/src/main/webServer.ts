@@ -27,15 +27,12 @@ export class WebServer {
 
   async initialize() {
     // Enable CORS for all origins
-    await this.server.register(
-      (await import("@fastify/cors")).default,
-      {
-        origin: true, // Allow all origins
-        methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
-        credentials: true
-      }
-    );
+    await this.server.register((await import("@fastify/cors")).default, {
+      origin: true, // Allow all origins
+      methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
+      credentials: true,
+    });
 
     await this.setupRoutes();
     this.setupErrorHandling();

@@ -11,8 +11,12 @@ let port: MessagePort | null = null;
 
 const registeredCallbacks = {};
 
+console.log("Preload script loaded");
+
 ipcRenderer.on("port", (e) => {
   port = e.ports[0];
+
+  console.log("Port received in preload");
 
   port.onmessage = (messageEvent) => {};
 });
@@ -22,22 +26,25 @@ contextBridge.exposeInMainWorld("api", {
     port?.postMessage({ type: "selected-layout", payload: layout }),
   sendSelectedImage: (image: Image) =>
     port?.postMessage({ type: "selected-image", payload: image }),
-  sendTextContent: (text: string) =>
-    port?.postMessage({ type: "text-content", payload: text }),
-  sendSelectedDisplay: (display: string) =>
-    ipcRenderer.send("selected-display", display),
-  sendShowPlayer: (isShown: boolean) =>
-    ipcRenderer.send("show-player", isShown),
+  sendTextContent: (text: string) => port?.postMessage({ type: "text-content", payload: text }),
+  sendSelectedDisplay: (display: string) => ipcRenderer.send("selected-display", display),
+  sendShowPlayer: (isShown: boolean) => ipcRenderer.send("show-player", isShown),
   sendShowBackground: (isShown: boolean) =>
     port?.postMessage({ type: "show-background", payload: isShown }),
-  sendSelectedView: (view: ViewType) =>
-    port?.postMessage({ type: "selected-view", payload: view }),
-  sendPinnedWindow: (isPinned: boolean) =>
-    ipcRenderer.send("pinned-window", isPinned),
+  sendSelectedView: (view: ViewType) => port?.postMessage({ type: "selected-view", payload: view }),
+  sendPinnedWindow: (isPinned: boolean) => ipcRenderer.send("pinned-window", isPinned),
   onNewImage: (callback: (data: Image) => void) => {
-    ipcRenderer.on("new-image", (event, image: Image) => callback(image));
+    console.log("Registering onNewImage callback");
+    ipcRenderer.on("new-image", (event, image: Image) => {
+      console.log("New image received:", image);
+      callback(image);
+    });
   },
   onDisplayList: (callback: (displays: Display[]) => void) => {
-    ipcRenderer.on("display-list", (event, data) => callback(data));
+    console.log("Registering onDisplayList callback");
+    ipcRenderer.on("display-list", (event, data) => {
+      console.log("Display list received:", data);
+      callback(data);
+    });
   },
 });
