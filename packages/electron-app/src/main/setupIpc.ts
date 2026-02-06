@@ -1,6 +1,6 @@
 ﻿import { clipboard, ipcMain, MessageChannelMain, screen, type BrowserWindow } from "electron";
 import ClipboardListener from "../clipboard-event/index";
-import { Image } from "../types/Image";
+import type { Image } from "../types/Image";
 import { preselectDisplay } from "./preselectDisplay";
 
 export function setupIpc(controlWindow: BrowserWindow, playerWindow: BrowserWindow) {
@@ -56,15 +56,55 @@ export function setupIpc(controlWindow: BrowserWindow, playerWindow: BrowserWind
 
   const { port1, port2 } = new MessageChannelMain();
 
-  controlWindow.once("ready-to-show", () => {
-    controlWindow.webContents.postMessage("port", null, [port1]);
+  let playerPortSent = false;
+  let controlPortSent = false;
+
+  // Wait for player renderer to signal it's ready
+  ipcMain.once("player-ready", () => {
+    if (!playerPortSent) {
+      console.log("Player renderer is ready, sending port");
+      sendPlayerWindowInitData();
+      playerPortSent = true;
+    }
   });
 
+  // Wait for control renderer to signal it's ready
+  ipcMain.once("control-ready", () => {
+    if (!controlPortSent) {
+      console.log("Control renderer is ready, sending port and display list");
+      sendControlWindowInitData();
+      controlPortSent = true;
+    }
+  });
+
+  // Fallback timeouts in case the ready signals never come
   playerWindow.once("ready-to-show", () => {
-    playerWindow.webContents.postMessage("port", null, [port2]);
+    setTimeout(() => {
+      if (!playerPortSent) {
+        console.log("Player ready signal timeout, sending port anyway");
+        sendPlayerWindowInitData();
+        playerPortSent = true;
+      }
+    }, 3000);
   });
 
   controlWindow.once("ready-to-show", () => {
+    setTimeout(() => {
+      if (!controlPortSent) {
+        console.log("Control ready signal timeout, sending port and display list anyway");
+        sendControlWindowInitData();
+        controlPortSent = true;
+      }
+    }, 3000);
+  });
+
+  function sendPlayerWindowInitData() {
+    playerWindow.webContents.postMessage("port", null, [port2]);
+  }
+
+  function sendControlWindowInitData() {
+    controlWindow.webContents.postMessage("port", null, [port1]);
+
     const preselectedDisplay = preselectDisplay(screen.getAllDisplays());
     console.log("Preselected display sent");
     controlWindow.webContents.send(
@@ -74,7 +114,8 @@ export function setupIpc(controlWindow: BrowserWindow, playerWindow: BrowserWind
         width: d.workAreaSize.width,
         height: d.workAreaSize.height,
         isPreselected: preselectedDisplay.id === d.id,
-      })),
+      }))
     );
-  });
+  }
 }
+

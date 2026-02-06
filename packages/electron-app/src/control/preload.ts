@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+﻿/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { contextBridge, ipcRenderer } from "electron";
-import { Layout } from "../types/Layout";
-import { Display } from "../types/Display";
-import { Image } from "../types/Image";
-import { ViewType } from "../types/ViewType";
+import type { Layout } from "../types/Layout";
+import type { Display } from "../types/Display";
+import type { Image } from "../types/Image";
+import type { ViewType } from "../types/ViewType";
 
 let port: MessagePort | null = null;
 
@@ -19,6 +19,12 @@ ipcRenderer.on("port", (e) => {
   console.log("Port received in preload");
 
   port.onmessage = (messageEvent) => {};
+});
+
+// Signal to main process that the preload script is ready
+window.addEventListener("DOMContentLoaded", () => {
+  console.log("Control renderer DOM loaded, signaling ready");
+  ipcRenderer.send("control-ready");
 });
 
 contextBridge.exposeInMainWorld("api", {

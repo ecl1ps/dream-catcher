@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+﻿/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { contextBridge, ipcRenderer } from "electron";
-import { Layout } from "../types/Layout";
-import { Image } from "../types/Image";
-import { ViewType } from "../types/ViewType";
+import type { Layout } from "../types/Layout";
+import type { Image } from "../types/Image";
+import type { ViewType } from "../types/ViewType";
 
 let port: MessagePort | null = null;
 
@@ -38,6 +38,12 @@ ipcRenderer.on("port", (e) => {
         break;
     }
   };
+});
+
+// Signal to main process that the preload script is ready
+window.addEventListener("DOMContentLoaded", () => {
+  console.log("Player renderer DOM loaded, signaling ready");
+  ipcRenderer.send("player-ready");
 });
 
 contextBridge.exposeInMainWorld("api", {
