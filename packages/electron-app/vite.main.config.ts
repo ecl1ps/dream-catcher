@@ -2,6 +2,7 @@
 
 // https://vitejs.dev/config
 export default defineConfig({
+  cacheDir: "node_modules/.vite-main",
   build: {
     sourcemap: true,
   },

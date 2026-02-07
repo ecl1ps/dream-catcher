@@ -2,6 +2,7 @@
 
 // https://vitejs.dev/config
 export default defineConfig({
+  cacheDir: "node_modules/.vite-control-preload",
   build: {
     sourcemap: true,
     lib: {

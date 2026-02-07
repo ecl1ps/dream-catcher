@@ -5,6 +5,7 @@ import { resolve } from "path";
 // https://vitejs.dev/config
 export default defineConfig({
   plugins: [react()],
+  cacheDir: resolve(__dirname, "node_modules/.vite-player-renderer"),
   root: resolve(__dirname, "src/player"),
   build: {
     sourcemap: true,

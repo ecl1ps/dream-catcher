@@ -8,6 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  cacheDir: resolve(__dirname, "node_modules/.vite-web-app"),
   css: {
     postcss: {},
   },
