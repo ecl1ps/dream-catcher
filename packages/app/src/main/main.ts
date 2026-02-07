@@ -116,17 +116,6 @@ const createWindows = () => {
 app.whenReady().then(async () => {
   const { controlWindow, playerWindow } = createWindows();
 
-  /*session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        "Content-Security-Policy": [
-          "default-src 'self' 'unsafe-inline' data:; img-src 'self' https: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval';",
-        ],
-      },
-    });
-  });*/
-
   // Start the web server
   if (enableWebServer) {
     try {
