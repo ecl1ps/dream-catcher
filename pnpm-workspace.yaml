@@ -1,0 +1,9 @@
+packages:
+  - "packages/*"
+
+onlyBuiltDependencies:
+  - esbuild
+  - electron
+  - electron-winstaller
+
+nodeLinker: hoisted

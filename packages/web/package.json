@@ -1,0 +1,31 @@
+{
+  "name": "@ecl1ps/dreamcatcher-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dreamcatcher Web Application",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --fix --unsafe",
+    "format": "biome format . --write",
+    "format:check": "biome format .",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ecl1ps/dreamcatcher-shared": "workspace:*",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "typescript": "~4.5.4",
+    "vite": "^6.0.7"
+  }
+}

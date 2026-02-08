@@ -1,0 +1,60 @@
+{
+  "name": "@ecl1ps/dreamcatcher-app",
+  "productName": "@ecl1ps/dreamcatcher",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Sharing and mirroring images to another screen - Electron App",
+  "main": ".vite/build/main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --fix --unsafe",
+    "format": "biome format . --write",
+    "format:check": "biome format .",
+    "build": "pnpm package",
+    "prebuild": "pnpm --filter @ecl1ps/dreamcatcher-web build",
+    "prepackage": "pnpm --filter @ecl1ps/dreamcatcher-web build",
+    "premake": "pnpm --filter @ecl1ps/dreamcatcher-web build",
+    "dev": "pnpm start",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": {
+    "name": "ecl1ps",
+    "email": "novotny.jan23+github@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@ecl1ps/dreamcatcher-shared": "workspace:*",
+    "@fastify/cors": "^10.1.0",
+    "@fastify/static": "^9.0.0",
+    "electron-squirrel-startup": "^1.0.1",
+    "fastify": "^5.6.2",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.10.2",
+    "@electron-forge/maker-deb": "^7.10.2",
+    "@electron-forge/maker-rpm": "^7.10.2",
+    "@electron-forge/maker-squirrel": "^7.10.2",
+    "@electron-forge/maker-zip": "^7.10.2",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.10.2",
+    "@electron-forge/plugin-fuses": "^7.10.2",
+    "@electron-forge/plugin-vite": "^7.10.2",
+    "@electron-forge/shared-types": "^7.10.2",
+    "@electron/fuses": "^1.8.0",
+    "@types/electron-squirrel-startup": "^1.0.2",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "electron": "39.1.2",
+    "typescript": "~4.5.4",
+    "vite": "^6.0.7"
+  }
+}

@@ -88,13 +88,7 @@ typings/
 # Vite
 .vite/
 
-# Electron-Forge
+# Build
 out/
-dist/app.js
-dist/app.js.map
-dist/index.js
-dist/index.js.map
-dist/preload.js
-dist/preload.js.map
-dist/renderer.js
-dist/renderer.js.map
+dist/
+.turbo/
