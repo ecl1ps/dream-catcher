@@ -1,7 +1,7 @@
-﻿import fastify, { FastifyInstance } from "fastify";
-import path from "path";
-import { app } from "electron";
-//import fastifyStatic from "@fastify/static";
+﻿import { app } from "electron";
+import fastify, { type FastifyInstance } from "fastify";
+import path from "node:path";
+import fs from "node:fs";
 
 export interface WebServerConfig {
   port: number;
@@ -39,11 +39,31 @@ export class WebServer {
   }
 
   private async setupRoutes() {
-    // Register static file serving for the React web app
-    /*await this.server.register((await import("@fastify/static")).default, {
-      root: path.join(__dirname, "..", "..", ".vite", "build", "webapp"),
-      prefix: "/",
-    });*/
+    // Find the web app dist folder - handle both development and production paths
+    const possibleWebPaths = [
+      path.join(__dirname, "../../../web/dist"), // Development
+      path.join(process.resourcesPath, "./dist"), // Production (extraResource)
+    ];
+
+    let webDistPath = "";
+    for (const webPath of possibleWebPaths) {
+      if (fs.existsSync(webPath)) {
+        webDistPath = webPath;
+        break;
+      }
+    }
+
+    if (!webDistPath) {
+      console.warn("Web app dist folder not found. Web interface will not be available.");
+    } else {
+      console.log(`Serving web app from: ${webDistPath}`);
+
+      // Register static file serving for the React web app
+      await this.server.register((await import("@fastify/static")).default, {
+        root: webDistPath,
+        prefix: "/",
+      });
+    }
 
     // API routes
     this.server.get("/api/health", async () => {

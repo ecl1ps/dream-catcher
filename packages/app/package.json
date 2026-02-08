@@ -15,6 +15,9 @@
     "format": "biome format . --write",
     "format:check": "biome format .",
     "build": "pnpm package",
+    "prebuild": "pnpm --filter @ecl1ps/dreamcatcher-web build",
+    "prepackage": "pnpm --filter @ecl1ps/dreamcatcher-web build",
+    "premake": "pnpm --filter @ecl1ps/dreamcatcher-web build",
     "dev": "pnpm start",
     "type-check": "tsc --noEmit"
   },
@@ -46,6 +49,7 @@
     "@electron-forge/plugin-vite": "^7.10.2",
     "@electron-forge/shared-types": "^7.10.2",
     "@electron/fuses": "^1.8.0",
+    "@types/electron-squirrel-startup": "^1.0.2",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
